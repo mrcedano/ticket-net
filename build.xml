@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TicketNet" default="default" basedir=".">
+    <description>¡El mejor sistema para tu cine!</description>
+    <import file="nbproject/build-impl.xml"/>
+    
+    <path id="classpath">
+        <fileset dir="lib"> 
+            <include name="*.jar" />
+        </fileset>
+    </path>
+    
+    <target name="compile">
+        <mkdir dir="build/" />
+        <javac srcdir="src" destdir="build" classpathref="classpath" />
+    </target>
+    
+    <target name="run" depends="compile">
+        <java classname="program" classpathref="classpath">
+            <classpath>
+                <pathelement path="build"/>
+            </classpath>
+        </java>
+    </target>
+    
+</project>
