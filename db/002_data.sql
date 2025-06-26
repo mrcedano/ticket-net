@@ -40,8 +40,8 @@ INSERT INTO Asientos (salas_id, estado) VALUES
 
 -- Usuarios
 INSERT INTO Usuarios (rol, nombre, contrasenia) VALUES
-(1, 'admin', 'admin123'),
-(2, 'juan', 'juanpass'),
-(2, 'maria', 'mariapass'),
-(3, 'carlos', 'carlospass'),
-(3, 'sofia', 'sofiapass');
+(0, 'admin', 'admin123'),   
+(1, 'juan', 'juanpass'),   
+(1, 'maria', 'mariapass'),  
+(2, 'carlos', 'carlospass'),
+(2, 'sofia', 'sofiapass');  
