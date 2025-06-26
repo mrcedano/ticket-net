@@ -24,38 +24,38 @@ CREATE TABLE Funciones (
   id INT NOT NULL AUTO_INCREMENT,
   activadesde DATETIME,
   activahasta DATETIME,
-  idPeliculas INT,
-  idSalas INT,
+  peliculas_id INT,
+  salas_id INT,
   PRIMARY KEY (id),
-  FOREIGN KEY (idPeliculas) REFERENCES Peliculas(id),
-  FOREIGN KEY (idSalas) REFERENCES Salas(id)
+  FOREIGN KEY (peliculas_id) REFERENCES Peliculas(id),
+  FOREIGN KEY (salas_id) REFERENCES Salas(id)
 );
 
 CREATE TABLE Carteleras (
   id INT NOT NULL AUTO_INCREMENT,
-  idPeliculas INT,
-  idFunciones INT,
+  peliculas_id INT,
+  funciones_id INT,
   activadesde DATETIME,
   activahasta DATETIME,
+  logo_filepath VARCHAR(255),
   PRIMARY KEY (id),
-  FOREIGN KEY (idPeliculas) REFERENCES Peliculas(id),
-  FOREIGN KEY (idFunciones) REFERENCES Funciones(id)
+  FOREIGN KEY (peliculas_id) REFERENCES Peliculas(id),
+  FOREIGN KEY (funciones_id) REFERENCES Funciones(id)
 );
 
 CREATE TABLE Asientos (
   id INT NOT NULL AUTO_INCREMENT,
-  idSalas INT,
+  salas_id INT,
   estado TINYINT(1),
   PRIMARY KEY (id),
-  FOREIGN KEY (idSalas) REFERENCES Salas(id)
+  FOREIGN KEY (salas_id) REFERENCES Salas(id)
 );
 
 CREATE TABLE Usuarios (
   id INT NOT NULL AUTO_INCREMENT,
   rol INT NOT NULL,
-  nombre VARCHAR(45),
-  email VARCHAR(45),
-  numero VARCHAR(45),
+  nombre VARCHAR(45) NOT NULL,
+  contrasenia VARCHAR(20) NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -63,13 +63,13 @@ DELIMITER $$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasCartelera`(in acd datetime, in ach datetime)
 BEGIN
-	insert into Carteleras (id, idPeliculas, idFunciones, activadesde, activahasta)
+	insert into Carteleras (id, peliculas_id, funciones_id, activadesde, activahasta)
     values (default, default, default, acd, ach);
 END $$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasFuncion`(in acd datetime, in ach datetime)
 BEGIN
-	insert into Funciones (id, activadesde, activahasta, idPeliculas, idSalas)
+	insert into Funciones (id, activadesde, activahasta, peliculas_id, salas_id)
     values (default, acd, ach, default, default);
 END $$
 
