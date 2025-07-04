@@ -1,18 +1,17 @@
-DROP DATABASE IF EXISTS TicketNet;
-CREATE DATABASE TicketNet;
-USE TicketNet;
-
-CREATE TABLE Peliculas (
+-- 1. Películas table
+CREATE TABLE peliculas (
   id INT NOT NULL AUTO_INCREMENT,
   nombre VARCHAR(45),
   duracion TIME,
   publico VARCHAR(45),
-  directores VARCHAR(45),
-  actores VARCHAR(45),
+  directores VARCHAR(255),
+  actores VARCHAR(255),
+  logo_filepath VARCHAR(255),
   PRIMARY KEY (id)
 );
 
-CREATE TABLE Salas (
+-- 2. Salas table
+CREATE TABLE salas (
   id INT NOT NULL AUTO_INCREMENT,
   nombre VARCHAR(45),
   tipo VARCHAR(45),
@@ -20,38 +19,47 @@ CREATE TABLE Salas (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE Funciones (
+-- 3. Carteleras table
+CREATE TABLE carteleras (
   id INT NOT NULL AUTO_INCREMENT,
   activadesde DATETIME,
   activahasta DATETIME,
-  peliculas_id INT,
-  salas_id INT,
-  PRIMARY KEY (id),
-  FOREIGN KEY (peliculas_id) REFERENCES Peliculas(id),
-  FOREIGN KEY (salas_id) REFERENCES Salas(id)
+  PRIMARY KEY (id)
 );
 
-CREATE TABLE Carteleras (
+-- 4. Función table
+CREATE TABLE funciones (
   id INT NOT NULL AUTO_INCREMENT,
-  peliculas_id INT,
-  funciones_id INT,
   activadesde DATETIME,
   activahasta DATETIME,
-  logo_filepath VARCHAR(255),
+  pelicula_id INT,
+  sala_id INT,
   PRIMARY KEY (id),
-  FOREIGN KEY (peliculas_id) REFERENCES Peliculas(id),
-  FOREIGN KEY (funciones_id) REFERENCES Funciones(id)
+  FOREIGN KEY (pelicula_id) REFERENCES peliculas(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (sala_id) REFERENCES salas(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Asientos (
+-- 5. Películas_Carteleras table (junction table)
+CREATE TABLE peliculas_carteleras(
   id INT NOT NULL AUTO_INCREMENT,
-  salas_id INT,
+  pelicula_id INT NOT NULL,
+  cartelera_id INT NOT NULL,
+  PRIMARY KEY(id),
+  FOREIGN KEY(pelicula_id) REFERENCES peliculas(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY(cartelera_id) REFERENCES carteleras(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 6. Asientos table
+CREATE TABLE asientos (
+  id INT NOT NULL AUTO_INCREMENT,
+  sala_id INT,
   estado TINYINT(1),
   PRIMARY KEY (id),
-  FOREIGN KEY (salas_id) REFERENCES Salas(id)
+  FOREIGN KEY (sala_id) REFERENCES salas(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Usuarios (
+-- 7. Usuarios table
+CREATE TABLE usuarios (
   id INT NOT NULL AUTO_INCREMENT,
   rol INT NOT NULL,
   nombre VARCHAR(45) NOT NULL,
@@ -59,78 +67,204 @@ CREATE TABLE Usuarios (
   PRIMARY KEY (id)
 );
 
+-- DELIMITER for stored procedures
 DELIMITER $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasCartelera`(in acd datetime, in ach datetime)
+-- Altas (Insert) Procedures
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasCartelera`(
+  IN acd DATETIME, 
+  IN ach DATETIME
+)
 BEGIN
-	insert into Carteleras (id, peliculas_id, funciones_id, activadesde, activahasta)
-    values (default, default, default, acd, ach);
+  INSERT INTO carteleras (activadesde, activahasta)
+  VALUES (acd, ach);
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasFuncion`(in acd datetime, in ach datetime)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasFuncion`(
+  IN acd DATETIME, 
+  IN ach DATETIME,
+  IN pelicula INT,
+  IN sala INT
+)
 BEGIN
-	insert into Funciones (id, activadesde, activahasta, peliculas_id, salas_id)
-    values (default, acd, ach, default, default);
+  INSERT INTO funcion (activadesde, activahasta, pelicula_id, sala_id)
+  VALUES (acd, ach, pelicula, sala);
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasPelicula`(in nom varchar(45),in dur time, in pub varchar(45),in dir varchar(255), in act varchar(255))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasPelicula`(
+  IN nom VARCHAR(45),
+  IN dur TIME, 
+  IN pub VARCHAR(45),
+  IN dir VARCHAR(255), 
+  IN act VARCHAR(255),
+  IN logo VARCHAR(255)
+)
 BEGIN
-	insert into Peliculas (id, nombre, duracion, publico, directores, actores)
-    values(default, nom, dur, pub, dir, act);
+  INSERT INTO peliculas (nombre, duracion, publico, directores, actores, logo_filepath)
+  VALUES(nom, dur, pub, dir, act, logo);
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasSala`(in nom varchar(45), in tipo varchar(45), in can int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasSala`(
+  IN nom VARCHAR(45), 
+  IN tipo VARCHAR(45), 
+  IN can INT
+)
 BEGIN
-	insert into Salas (id, nombre, tipo, CantAsientos)
-    values (default, nom, tipo, can);
+  INSERT INTO salas (nombre, tipo, CantAsientos)
+  VALUES (nom, tipo, can);
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasCartelera`(in idc int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasAsiento`(
+  IN sala INT,
+  IN est TINYINT(1)
+)
 BEGIN
-	DELETE FROM Carteleras WHERE id = idc;
+  INSERT INTO asientos (sala_id, estado)
+  VALUES (sala, est);
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasFuncion`(in idf int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasUsuario`(
+  IN rol INT,
+  IN nom VARCHAR(45),
+  IN con VARCHAR(20)
+)
 BEGIN
-	delete from Funciones where id = idf;
+  INSERT INTO usuarios (rol, nombre, contrasenia)
+  VALUES (rol, nom, con);
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasPelicula`(in idp int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AltasPeliculaCartelera`(
+  IN pelicula INT,
+  IN cartelera INT
+)
 BEGIN
-	delete from Peliculas where id = idp;
+  INSERT INTO peliculas_carteleras (pelicula_id, cartelera_id)
+  VALUES (pelicula, cartelera);
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasSala`(in ids int)
+-- Bajas (Delete) Procedures
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasCartelera`(IN idc INT)
 BEGIN
-	delete from Salas where id = ids;
+  DELETE FROM carteleras WHERE id = idc;
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosSala`(in nom varchar(45),in tip varchar(45), in can int, in ids int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasFuncion`(IN idf INT)
 BEGIN
-	update Salas
-    set nombre = nom, tipo = tip, CantAsientos = can
-    where id = ids;
+  DELETE FROM funcion WHERE id = idf;
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosCartelera`(in acd datetime, in ach datetime, in idc int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasPelicula`(IN idp INT)
 BEGIN
-	update Carteleras
-    set activadesde = acd, activahasta = ach
-    where id = idc;
+  DELETE FROM peliculas WHERE id = idp;
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosFuncion`(in acd datetime, in ach datetime, in idf int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasSala`(IN ids INT)
 BEGIN
-	update Funciones
-    set activadesde = acd, activahasta = ach
-    where id = idf;
+  DELETE FROM salas WHERE id = ids;
 END $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosPelicula`(in nom varchar(45),in dur time,in pub varchar(45),in dir varchar(45),in act varchar(45),in idp int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasAsiento`(IN ida INT)
 BEGIN
-	update Peliculas
-    set nombre = nom, duracion = dur, publico = pub, directores = dir, actores = act
-    where id = idp;
+  DELETE FROM asientos WHERE id = ida;
+END $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasUsuario`(IN idu INT)
+BEGIN
+  DELETE FROM usuarios WHERE id = idu;
+END $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `BajasPeliculaCartelera`(IN idpc INT)
+BEGIN
+  DELETE FROM peliculas_carteleras WHERE id = idpc;
+END $$
+
+-- Cambios (Update) Procedures
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosSala`(
+  IN nom VARCHAR(45),
+  IN tip VARCHAR(45), 
+  IN can INT,
+  IN ids INT
+)
+BEGIN
+  UPDATE salas
+  SET nombre = nom, tipo = tip, CantAsientos = can
+  WHERE id = ids;
+END $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosCartelera`(
+  IN acd DATETIME, 
+  IN ach DATETIME, 
+  IN idc INT
+)
+BEGIN
+  UPDATE carteleras
+  SET activadesde = acd, activahasta = ach
+  WHERE id = idc;
+END $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosFuncion`(
+  IN acd DATETIME, 
+  IN ach DATETIME, 
+  IN pelicula INT,
+  IN sala INT,
+  IN idf INT
+)
+BEGIN
+  UPDATE funcion
+  SET activadesde = acd, activahasta = ach, pelicula_id = pelicula, sala_id = sala
+  WHERE id = idf;
+END $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosPelicula`(
+  IN nom VARCHAR(45),
+  IN dur TIME,
+  IN pub VARCHAR(45),
+  IN dir VARCHAR(255),
+  IN act VARCHAR(255),
+  IN logo VARCHAR(255),
+  IN idp INT
+)
+BEGIN
+  UPDATE peliculas
+  SET nombre = nom, duracion = dur, publico = pub, directores = dir, actores = act, logo_filepath = logo
+  WHERE id = idp;
+END $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosAsiento`(
+  IN sala INT,
+  IN est TINYINT(1),
+  IN ida INT
+)
+BEGIN
+  UPDATE asientos
+  SET sala_id = sala, estado = est
+  WHERE id = ida;
+END $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosUsuario`(
+  IN rol INT,
+  IN nom VARCHAR(45),
+  IN con VARCHAR(20),
+  IN idu INT
+)
+BEGIN
+  UPDATE usuarios
+  SET rol = rol, nombre = nom, contrasenia = con
+  WHERE id = idu;
+END $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CambiosPeliculaCartelera`(
+  IN pelicula INT,
+  IN cartelera INT,
+  IN idpc INT
+)
+BEGIN
+  UPDATE peliculas_carteleras
+  SET pelicula_id = pelicula, cartelera_id = cartelera
+  WHERE id = idpc;
 END $$
 
 DELIMITER ;

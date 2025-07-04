@@ -24,6 +24,11 @@ public class DbConnection {
         connection = DriverManager.getConnection(url, user, password);
     }    
     
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    
     public static Statement getStatement() throws SQLException {
       return connection.createStatement();
     }
