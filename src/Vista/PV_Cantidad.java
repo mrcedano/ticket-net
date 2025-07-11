@@ -240,7 +240,7 @@ public class PV_Cantidad extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            new Vista.Cartelera().setVisible(true);
+            new ClienteVistas.panel().setVisible(true);
             this.dispose();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, null, ex);

@@ -15,7 +15,6 @@ import javax.swing.SwingConstants;
 
 public class SideBarBuilder {
 
-    // Inner class to store both the option text and its action
     private static class SideBarOption {
         final String text;
         final Runnable callback;

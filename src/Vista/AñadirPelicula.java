@@ -224,7 +224,7 @@ public class AñadirPelicula extends javax.swing.JPanel {
 
     private void BtnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegresarActionPerformed
         try {
-            Vista.Cartelera objCar = new Vista.Cartelera();
+            ClienteVistas.panel objCar = new ClienteVistas.panel();
             objCar.setVisible(true);
             setVisible(false);
         } catch (Exception ex) {

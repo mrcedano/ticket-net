@@ -2,6 +2,7 @@
 
 package Vista;
 
+import ClienteVistas.panel;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JButton;
@@ -235,7 +236,7 @@ public class Asientos extends javax.swing.JFrame {
 
         JOptionPane.showMessageDialog(this, "¡Asientos seleccionados correctamente!", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
             try {
-                new Cartelera().setVisible(true);
+                new panel().setVisible(true);
             } catch (Exception ex) {
                 Logger.getLogger(Asientos.class.getName()).log(Level.SEVERE, null, ex);
             }

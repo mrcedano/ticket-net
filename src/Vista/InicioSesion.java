@@ -227,13 +227,20 @@ public class InicioSesion extends javax.swing.JFrame {
             Global.user = userDto;
 
             switch (userType) {
-                case ADMINISTRADOR :
-                System.out.println("El usuario es un administrador");
-                case CAJERO :
-                System.out.println("El usuario es un cajero");
-                case CLIENTE :{
-                    new Cartelera().setVisible(true);
+                case ADMINISTRADOR : {
+                    System.out.println("El usuario es un administrador");
+                    new AdministradorVistas.Panel().setVisible(true);
                     setVisible(false);
+                    break;
+                }
+                case CAJERO : {
+                    System.out.println("El usuario es un cajero");
+                    break;
+                }
+                case CLIENTE :{
+                    new ClienteVistas.panel().setVisible(true);
+                    setVisible(false);
+                    break;
                 }
                 default : {
                     JOptionPane.showMessageDialog(null, "Usuario correcto!", "Acceso concedido", JOptionPane.INFORMATION_MESSAGE);

@@ -3,24 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Vista/Cartelera.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Utils/Global.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Vista/OlvidoContrasenia.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Vista/PV_Cantidad.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Database/DbConnection.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Modelo/UserModel.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/JObjects/SideBarBuilder.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/DTOs/UserDto.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/main/programRun.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Utils/AsientosGlobales.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/config.properties</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Utils/EmailSender.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Vista/VentanaPeliculas.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Vista/AñadirPelicula.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Vista/InicioSesion.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Utils/Media.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Vista/Asientos.java</file>
-            <file>file:/C:/Users/jccre/OneDrive/Escritorio/UPSIN/SEXTO%20CUATRIMESTRE/Programación%20Orientada%20a%20Objetos/NetBeansProjects/30-06-25/ticketnuevo/src/Vista/CorreoRecuperacionEnviado.java</file>
+            <file>file:/home/cincinrooting/Documents/Projects/ticket-net/src/main/program.java</file>
+            <file>file:/home/cincinrooting/Documents/Projects/ticket-net/src/AdministradorVistas/panel.java</file>
+            <file>file:/home/cincinrooting/Documents/Projects/ticket-net/src/Modelo/UserModel.java</file>
+            <file>file:/home/cincinrooting/Documents/Projects/ticket-net/src/Vista/CorreoRecuperacionEnviado.java</file>
+            <file>file:/home/cincinrooting/Documents/Projects/ticket-net/src/Vista/AñadirPelicula.java</file>
+            <file>file:/home/cincinrooting/Documents/Projects/ticket-net/src/ClienteVistas/panel.java</file>
+            <file>file:/home/cincinrooting/Documents/Projects/ticket-net/src/Vista/InicioSesion.java</file>
+            <file>file:/home/cincinrooting/Documents/Projects/ticket-net/src/DTOs/UserDto.java</file>
         </group>
     </open-files>
 </project-private>
