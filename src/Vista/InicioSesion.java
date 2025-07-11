@@ -41,6 +41,12 @@ public class InicioSesion extends javax.swing.JFrame {
         iniciosesion_button.setContentAreaFilled(true);  
         iniciosesion_button.setBorderPainted(false);     
         iniciosesion_button.setBackground(new Color(255, 74, 74));
+        
+        registrarse_button.setOpaque(true);              
+        registrarse_button.setContentAreaFilled(true);  
+        registrarse_button.setBorderPainted(false);     
+        registrarse_button.setBackground(new Color(32, 72, 149));
+        
         PassForg.setText("<html><u>¿Olvidaste tu contraseña?</u></html>");
         PassForg.setForeground(Color.white);
         PassForg.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -67,6 +73,7 @@ public class InicioSesion extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         iniciosesion_button = new javax.swing.JButton();
+        registrarse_button = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         contrasenia_field = new javax.swing.JPasswordField();
         usuario_field = new javax.swing.JTextField();
@@ -100,6 +107,20 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
         jPanel1.add(iniciosesion_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 425, 300, 64));
+
+        registrarse_button.setBackground(new java.awt.Color(32, 72, 149));
+        registrarse_button.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
+        registrarse_button.setForeground(new java.awt.Color(255, 255, 255));
+        registrarse_button.setText("Registrarse");
+        registrarse_button.setToolTipText("");
+        registrarse_button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(32, 72, 149)));
+        registrarse_button.setDefaultCapable(false);
+        registrarse_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarse_buttonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(registrarse_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 495, 300, 40));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 22)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -152,7 +173,7 @@ public class InicioSesion extends javax.swing.JFrame {
                 PassForgMouseClicked(evt);
             }
         });
-        jPanel1.add(PassForg, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 501, -1, -1));
+        jPanel1.add(PassForg, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 545, -1, -1));
 
         VER.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/VER (2).png"))); // NOI18N
         VER.setText("jLabel1");
@@ -177,7 +198,7 @@ public class InicioSesion extends javax.swing.JFrame {
         jLabel4.setText("Contraseña: ");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 326, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 530));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -275,6 +296,11 @@ public class InicioSesion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_contrasenia_fieldMousePressed
 
+    private void registrarse_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarse_buttonActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Funcionalidad de registro en desarrollo", "Información", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_registrarse_buttonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -331,6 +357,7 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JPasswordField contrasenia_field;
     private javax.swing.JLabel icono_central_jlb;
     private javax.swing.JButton iniciosesion_button;
+    private javax.swing.JButton registrarse_button;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
