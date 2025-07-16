@@ -23,7 +23,6 @@ public class SimpleORM {
     }
     
     public ResultSet simpleExecute(String query) throws SQLException {
-        // statement.clearBatch();
         ResultSet rs = statement.executeQuery(query);
         
         if (!rs.isBeforeFirst()) {
