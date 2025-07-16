@@ -10,14 +10,12 @@ public class CarteleraDto {
     private Date activeUntil;
     public List<PeliculaDto> movies;
 
-    // Constructor
     public CarteleraDto(int id, Date activeSince, Date activeUntil) {
         this.id = id;
         this.activeSince = activeSince;
         this.activeUntil = activeUntil;
     }
 
-    // Getters
     public int getId() {
         return id;
     }

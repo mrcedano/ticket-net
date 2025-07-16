@@ -17,7 +17,6 @@ public class CarteleraModel {
     }
 
     public CarteleraDto findOneCarteleraById(int id) throws Exception {
-        // Query the Carteleras table for this id
         ResultSet rsCartelera = orm.simpleExecute("SELECT * FROM carteleras WHERE id=" + id);
 
         if (rsCartelera == null || !rsCartelera.next()) {
@@ -27,11 +26,9 @@ public class CarteleraModel {
         int carteleraId = rsCartelera.getInt("id");
         Date activeSince = rsCartelera.getTimestamp("activadesde");
         Date activeUntil = rsCartelera.getTimestamp("activahasta");
-        // Optionally: String logoPath = rsCartelera.getString("logo_filepath");
 
         CarteleraDto cartelera = new CarteleraDto(carteleraId, activeSince, activeUntil);
 
-        // Query all movies for this cartelera
         ResultSet rsPeliculas = orm.simpleExecute(
             "SELECT p.nombre, p.duracion, p.publico, p.actores, p.portada " +
             "FROM Peliculas p " +

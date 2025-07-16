@@ -1,5 +1,3 @@
-
-
 package Vista;
 
 import ClienteVistas.panel;
@@ -23,7 +21,7 @@ public class Asientos extends javax.swing.JFrame {
     }
 
     Asientos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
     private void agregarAsientos() {
@@ -42,7 +40,7 @@ public class Asientos extends javax.swing.JFrame {
 
             if (Utils.AsientosGlobales.estaSeleccionado(nombreAsiento)) {
                 asiento.setBackground(Color.YELLOW);
-                asiento.setEnabled(false); // ya seleccionado antes
+                asiento.setEnabled(false); 
             } else {
                 asiento.setBackground(Color.GREEN);
                 asiento.addActionListener(e -> {
@@ -71,7 +69,6 @@ public class Asientos extends javax.swing.JFrame {
     JOptionPane.showMessageDialog(this, "Asientos disponibles: " + disponibles);
 }
 
-    
     private int contarSeleccionEnPanel(javax.swing.JPanel panel) {
     int count = 0;
     for (java.awt.Component comp : panel.getComponents()) {
@@ -82,10 +79,8 @@ public class Asientos extends javax.swing.JFrame {
     return count;
     }
 
-
-
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -103,14 +98,14 @@ public class Asientos extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(48, 48, 48));
 
         icono_central_jlb.setBackground(new java.awt.Color(25, 28, 28));
-        icono_central_jlb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logofinal2.png"))); // NOI18N
+        icono_central_jlb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logofinal2.png"))); 
         icono_central_jlb.setPreferredSize(new java.awt.Dimension(1024, 1536));
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 26)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 26)); 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Lilo y Stich");
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 20)); 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Selecciona tus asientos");
 
@@ -119,7 +114,7 @@ public class Asientos extends javax.swing.JFrame {
         jPanel4.setLayout(new java.awt.GridLayout());
 
         jButton2.setBackground(new java.awt.Color(49, 49, 49));
-        jButton2.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
+        jButton2.setFont(new java.awt.Font("SansSerif", 1, 20)); 
         jButton2.setForeground(new java.awt.Color(102, 153, 255));
         jButton2.setText("Pantalla | Sala 3");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
@@ -130,7 +125,7 @@ public class Asientos extends javax.swing.JFrame {
         });
 
         jButton3.setBackground(new java.awt.Color(51, 51, 51));
-        jButton3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jButton3.setFont(new java.awt.Font("SansSerif", 1, 18)); 
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Cancelar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -140,7 +135,7 @@ public class Asientos extends javax.swing.JFrame {
         });
 
         jButton1.setBackground(new java.awt.Color(33, 72, 149));
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jButton1.setFont(new java.awt.Font("SansSerif", 1, 18)); 
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Confirmar selección");
         jButton1.setBorder(null);
@@ -206,18 +201,18 @@ public class Asientos extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, -10, 540, 790));
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+        
+    }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         new PV_Cantidad().setVisible(true);
         setVisible(false);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         List<String> seleccionadosSesion = new ArrayList<>();
 
     for (java.awt.Component comp : jPanel4.getComponents()) {
@@ -248,18 +243,13 @@ public class Asientos extends javax.swing.JFrame {
  
             }
             
-            
         } catch (Exception ex) {
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
     }
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -276,9 +266,7 @@ public class Asientos extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Asientos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Asientos().setVisible(true);
@@ -286,7 +274,6 @@ public class Asientos extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel icono_central_jlb;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -295,10 +282,9 @@ public class Asientos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
-    // End of variables declaration//GEN-END:variables
-
+    
     private void If(boolean empty) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
 }
