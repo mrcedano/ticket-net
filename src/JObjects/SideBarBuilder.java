@@ -55,24 +55,23 @@ public class SideBarBuilder {
             JLabel valueLabel = new JLabel(option.text, SwingConstants.CENTER);
             optionPanel.add(valueLabel);
 
-            // If a callback is provided, add the mouse listener for the event
+
             if (option.callback != null) {
                 optionPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 optionPanel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        // Execute the callback when the panel is clicked
                         option.callback.run();
                     }
 
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        optionPanel.setBackground(optionHoverColor); // Hover effect
+                        optionPanel.setBackground(optionHoverColor);
                     }
 
                     @Override
                     public void mouseExited(MouseEvent e) {
-                        optionPanel.setBackground(optionDefaultColor); // Restore original color
+                        optionPanel.setBackground(optionDefaultColor);
                     }
                 });
             }
