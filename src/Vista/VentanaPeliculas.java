@@ -1,5 +1,6 @@
 package Vista;
 
+import AdministradorVistas.AddMovie;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -15,7 +16,7 @@ public class VentanaPeliculas {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Añadir Película");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(new AñadirPelicula());
+            frame.setContentPane(new AddMovie());
             frame.setSize(500, 500);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);

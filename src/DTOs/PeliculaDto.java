@@ -1,26 +1,27 @@
 package DTOs;
-import java.sql.Time;
 
 public class PeliculaDto {
     private String nombre;
-    private Time duration;
+    private String duration;
+    private String directors;
     private String public_objetive;
     private String actors;
     private String logo;
 
-    public PeliculaDto(String nombre, Time duration, String public_objetive, String actors, String logo) {
+    public PeliculaDto(String nombre, String duration, String public_objetive, String actors, String logo, String directors) {
         this.nombre = nombre;
         this.duration = duration;
         this.public_objetive = public_objetive;
         this.actors = actors;
         this.logo = logo;
+        this.directors = directors;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public Time getDuration() {
+    public String getDuration() {
         return duration;
     }
 
@@ -34,5 +35,9 @@ public class PeliculaDto {
 
     public String getLogo() {
         return logo;
+    }
+
+    public String getDirectors() {
+        return directors;
     }
 }

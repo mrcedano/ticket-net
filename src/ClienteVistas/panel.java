@@ -115,14 +115,10 @@ public class panel extends javax.swing.JFrame { /**
    
     CarteleraModel carteleraModel = new CarteleraModel();
     PeliculaDto[] peliculas = carteleraModel.getAllPeliculasFromCarteleras();
-    // --- START OF MODIFICATION ---
-    // 1. Set the main panel to use a horizontal BoxLayout
     soon_movies_pnl.setLayout(new BoxLayout(soon_movies_pnl, BoxLayout.LINE_AXIS));
-    // 2. Iterate through the movies to create and add their components
     for (int i = 0; i < peliculas.length; i++) {
         PeliculaDto pelicula = peliculas[i];
-
-        // Create a panel for each movie with a vertical layout
+        
         JPanel moviePanel = new JPanel();
         moviePanel.setLayout(new BoxLayout(moviePanel, BoxLayout.PAGE_AXIS));
 
@@ -135,16 +131,13 @@ public class panel extends javax.swing.JFrame { /**
         JLabel title = new JLabel(pelicula.getNombre());
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        // Add poster and title to the movie's panel
         moviePanel.add(poster);
         moviePanel.add(Box.createVerticalStrut(5));
         moviePanel.add(title);
 
-        // Add the movie panel to the main container
         soon_movies_pnl.add(moviePanel);
         soon_movies_pnl.add(Box.createHorizontalStrut(5));
 
-        // Add a 5px horizontal gap between movies, but not after the last one
         if (i < peliculas.length - 1) {
             soon_movies_pnl.add(Box.createHorizontalStrut(5));
         }
