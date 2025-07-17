@@ -3,6 +3,7 @@ package Builders;
 import DTOs.PeliculaDto;
 
 public class PeliculaBuilder {
+    private int id = 0;
     private String nombre = "";
     private String duration = "";
     private String public_objetive = "";
@@ -11,6 +12,11 @@ public class PeliculaBuilder {
     private String directors = "";
 
     public PeliculaBuilder() {
+    }
+    
+    public PeliculaBuilder withId(int id) {
+        this.id = id;
+        return this;
     }
 
     public PeliculaBuilder withNombre(String nombre) {
@@ -44,6 +50,6 @@ public class PeliculaBuilder {
     }
 
     public PeliculaDto build() {
-        return new PeliculaDto(nombre, duration, public_objetive, actors, logo, directors);
+        return new PeliculaDto(id, nombre, duration, public_objetive, actors, logo, directors);
     }
 }

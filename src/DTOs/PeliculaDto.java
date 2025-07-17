@@ -1,6 +1,7 @@
 package DTOs;
 
 public class PeliculaDto {
+    private int id;
     private String nombre;
     private String duration;
     private String directors;
@@ -8,13 +9,18 @@ public class PeliculaDto {
     private String actors;
     private String logo;
 
-    public PeliculaDto(String nombre, String duration, String public_objetive, String actors, String logo, String directors) {
+    public PeliculaDto(int id, String nombre, String duration, String public_objetive, String actors, String logo, String directors) {
+        this.id = id;
         this.nombre = nombre;
         this.duration = duration;
         this.public_objetive = public_objetive;
         this.actors = actors;
         this.logo = logo;
         this.directors = directors;
+    }
+    
+    public int getId() {
+        return id;
     }
 
     public String getNombre() {

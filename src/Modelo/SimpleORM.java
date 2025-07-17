@@ -2,7 +2,6 @@ package Modelo;
 
 import Database.CallableProcedure;
 import Database.DbConnection;
-import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
@@ -35,7 +34,7 @@ public class SimpleORM {
          return callable;
     }
     
-    public ResultSet simpleExecute(String query) throws SQLException {
+    public ResultSet simpleQuery(String query) throws SQLException {
         // statement.clearBatch();
         ResultSet rs = statement.executeQuery(query);
         
@@ -44,6 +43,10 @@ public class SimpleORM {
         }
         
         return rs;
+    }
+    
+    public int simpleUpdate(String query) throws SQLException {
+       return statement.executeUpdate(query);
     }
     
     public void closeConnection() throws SQLException {

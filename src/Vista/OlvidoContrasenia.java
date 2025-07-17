@@ -16,23 +16,11 @@ import java.awt.Color;
  */
 public class OlvidoContrasenia extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(OlvidoContrasenia.class.getName());
-
     /**
      * Creates new form OlvidoContrasenia
      */
     public OlvidoContrasenia() {
         initComponents();
-        Regresar.setText("<html><u>Regresar al inicio</u></html>");
-        Regresar.setForeground(Color.white);
-        Regresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        Regresar.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            new InicioSesion().setVisible(true);
-            dispose();
-        }       
-    });
         setLocationRelativeTo(null);
     }
 
@@ -132,49 +120,6 @@ public class OlvidoContrasenia extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     }//GEN-LAST:event_jButton1ActionPerformed
-
-        private boolean esCorreoValido(String correo) {
-    String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
-    java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(regex);
-    java.util.regex.Matcher matcher = pattern.matcher(correo);
-
-    if (!matcher.matches()) return false;
-
-    String dominio = matcher.group(1).toLowerCase();
-    String[] permitidos = {"gmail.com", "hotmail.com", "outlook.com", "yahoo.com", "icloud.com", "live.com"};
-
-    for (String d : permitidos) {
-        if (dominio.equals(d)) return true;
-    }
-
-    return false;
-}
-
-   
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new OlvidoContrasenia().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel icono_central_jlb;

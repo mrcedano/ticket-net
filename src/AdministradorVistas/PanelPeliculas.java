@@ -68,7 +68,48 @@ public class PanelPeliculas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void consultar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultar_btnActionPerformed
-
+        try {
+            setVisible(false);
+            SearchMovie searchMovie = new SearchMovie();
+            
+            searchMovie.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            searchMovie.setVisible(true);
+            
+            searchMovie.addWindowListener(new WindowListener() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    searchMovie.setVisible(false);
+                    
+                    setVisible(true);
+                }
+                
+                @Override
+                public void windowOpened(WindowEvent we) {
+                }
+                
+                @Override
+                public void windowClosed(WindowEvent we) {
+                }
+                
+                @Override
+                public void windowIconified(WindowEvent we) {
+                }
+                
+                @Override
+                public void windowDeiconified(WindowEvent we) {
+                }
+                
+                @Override
+                public void windowActivated(WindowEvent we) {
+                }
+                
+                @Override
+                public void windowDeactivated(WindowEvent we) {
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_consultar_btnActionPerformed
 
     private void agregar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregar_btnActionPerformed

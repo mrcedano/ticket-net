@@ -12,7 +12,7 @@ public class UserModel {
     }
 
     public UserDto findUserByIdAndRole(int id, int rol) throws Exception {
-        ResultSet rs = orm.simpleExecute(
+        ResultSet rs = orm.simpleQuery(
                 "SELECT * FROM usuarios WHERE id = " + id + " AND rol = " + rol
         );
         if (rs != null && rs.next()) {
@@ -28,7 +28,7 @@ public class UserModel {
     }
 
     public UserDto findUserByUsername(String username) throws Exception {
-        ResultSet resultset = orm.simpleExecute("SELECT * FROM usuarios WHERE nombre='" + username + "'");
+        ResultSet resultset = orm.simpleQuery("SELECT * FROM usuarios WHERE nombre='" + username + "'");
 
         if (resultset == null) {
             return null;
