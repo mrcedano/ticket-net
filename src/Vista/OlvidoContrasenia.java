@@ -7,7 +7,6 @@ package Vista;
 import DTOs.UserDto;
 import Modelo.UserModel;
 import javax.swing.JOptionPane;
-import Utils.EmailSender;
 import java.awt.Color;
 
 
@@ -147,68 +146,6 @@ public class OlvidoContrasenia extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    String correoDestino = jTextField1.getText().trim();
-
-    if (correoDestino.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, ingresa un correo electrónico.", "Campo vacío", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    if (!esCorreoValido(correoDestino)) {
-        JOptionPane.showMessageDialog(this, "El correo no tiene un formato válido o no es de un dominio aceptado.", "Correo inválido", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    String idStr = JOptionPane.showInputDialog(this, "¿Cuál es tu ID?");
-    if (idStr == null || idStr.trim().isEmpty()) return;
-
-    int id;
-    try {
-        id = Integer.parseInt(idStr);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID inválido.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    String rolStr = JOptionPane.showInputDialog(this, "¿Cuál es tu rol?\n1 = Administrador\n2 = Cajero\n3 = Cliente");
-    if (rolStr == null || rolStr.trim().isEmpty()) return;
-
-    int rol;
-    try {
-        rol = Integer.parseInt(rolStr);
-        if (rol < 1 || rol > 3) throw new NumberFormatException();
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Rol inválido. Debe ser 1, 2 o 3.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    try {
-        UserModel userModel = new UserModel();
-        UserDto user = userModel.findUserByIdAndRole(id, rol);
-
-        if (user == null) {
-            JOptionPane.showMessageDialog(this, "No se encontró un usuario con ese ID y rol.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String asunto = "Recuperación de contraseña";
-        String mensaje = "Hola,\n\n"
-                + "Has solicitado recuperar tu contraseña.\n\n"
-                + "Tu usuario es: " + user.getUsername() + "\n"
-                + "Tu contraseña es: " + user.getPassword() + "\n\n"
-                + "Recomendamos cambiarla después de iniciar sesión.\n\n"
-                + "Saludos,\nTicketNet";
-
-        Utils.EmailSender.enviarCorreo(correoDestino, asunto, mensaje);
-
-        new CorreoRecuperacionEnviado().setVisible(true);
-        this.dispose();
-
-    } catch (Exception ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error al enviar correo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void RegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RegresarMouseClicked

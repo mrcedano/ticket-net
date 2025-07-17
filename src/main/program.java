@@ -14,7 +14,7 @@ public class program {
           new InicioSesion().setVisible(true);
           
         } catch(Exception e) {
-            System.err.println("Excepción encontrada! \n Mensaje: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
