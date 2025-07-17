@@ -47,7 +47,8 @@ public class CarteleraModel {
             String publico = rsPeliculas.getString("publico");
             String actores = rsPeliculas.getString("actores");
             String portada = rsPeliculas.getString("portada");
-            PeliculaDto pelicula = new PeliculaDto(nombre, duracion, publico, actores, portada);
+            String directores = rsPeliculas.getString("directores");
+            PeliculaDto pelicula = new PeliculaDto(nombre, duracion.toString(), publico, actores, portada, directores);
             movies.add(pelicula);
         }
         
@@ -71,12 +72,12 @@ public class CarteleraModel {
 
             CarteleraDto cartelera = new CarteleraDto(carteleraId, activeSince, activeUntil);
 
+            
             ResultSet rsPeliculas = orm.simpleExecute(
-                "SELECT p.nombre, p.duracion, p.publico, p.actores, p.portada " +
-                "FROM peliculas p " +
-                "JOIN peliculas_carteleras pc ON p.id = pc.pelicula_id " +
-                "WHERE pc.cartelera_id=" + carteleraId
+                "SELECT p.nombre, p.duracion, p.publico, p.actores, p.logo_filepath " +
+                "FROM peliculas AS p"
             );
+            
             List<PeliculaDto> movies = new ArrayList<>();
             while (rsPeliculas != null && rsPeliculas.next()) {
                 String nombre = rsPeliculas.getString("nombre");
@@ -84,7 +85,7 @@ public class CarteleraModel {
                 String publico = rsPeliculas.getString("publico");
                 String actores = rsPeliculas.getString("actores");
                 String portada = rsPeliculas.getString("portada");
-                PeliculaDto pelicula = new PeliculaDto(nombre, duracion, publico, actores, portada);
+                PeliculaDto pelicula = new PeliculaDto(nombre, duracion.toString(), publico, actores, portada, "");
                 movies.add(pelicula);
             }
             cartelera.movies = movies;
@@ -98,8 +99,7 @@ public class CarteleraModel {
     public PeliculaDto[] getAllPeliculasFromCarteleras() throws Exception {
         List<PeliculaDto> moviesList = new ArrayList<PeliculaDto>();
         
-        ResultSet rs = orm.simpleExecute("SELECT peliculas.nombre, peliculas.publico, peliculas.logo_filepath, peliculas.duracion FROM peliculas\n" +
-"INNER JOIN peliculas_carteleras ON peliculas_carteleras.pelicula_id = peliculas.id;");
+        ResultSet rs = orm.simpleExecute("SELECT peliculas.nombre, peliculas.publico, peliculas.logo_filepath, peliculas.duracion FROM peliculas");
         
         if (rs == null) {
             return null;
@@ -111,7 +111,7 @@ public class CarteleraModel {
             String portadaFromDb = rs.getString("peliculas.logo_filepath");
             String duracionFromDb = rs.getString("peliculas.duracion");
 
-            moviesList.add(new PeliculaDto(nombreFromDb, null, publicoFromDb, duracionFromDb, portadaFromDb));
+            moviesList.add(new PeliculaDto(nombreFromDb, "", publicoFromDb, duracionFromDb, portadaFromDb, ""));
         }
         
         return moviesList.toArray(new PeliculaDto[0]);

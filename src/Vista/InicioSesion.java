@@ -238,6 +238,7 @@ public class InicioSesion extends javax.swing.JFrame {
                     break;
                 }
                 case CLIENTE :{
+                    System.out.println("El usuario es Cliente");
                     new ClienteVistas.panel().setVisible(true);
                     setVisible(false);
                     break;
@@ -247,7 +248,7 @@ public class InicioSesion extends javax.swing.JFrame {
                 }
             }
         } catch(Exception e) {
-
+            e.printStackTrace();
         }
     }//GEN-LAST:event_iniciosesion_buttonActionPerformed
 
