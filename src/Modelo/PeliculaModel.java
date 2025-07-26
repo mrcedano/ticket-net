@@ -2,6 +2,7 @@ package Modelo;
 
 import Builders.PeliculaBuilder;
 import DTOs.PeliculaDto;
+import Database.CallableProcedure;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +59,26 @@ public class PeliculaModel {
        orm.simpleUpdate("DELETE FROM peliculas WHERE id=" + id);
     }
     
-    public void updateMovie(PeliculaBuilder movie) {
+    public void updateMovie(PeliculaDto movie) throws Exception {
+       short randomId = (short) (new java.util.Random().nextInt(1000 - 0 + 1) + 0);
+       lastRandomId = randomId;
+       
+        CallableProcedure callableProcedure = orm.simpleProcedure("CambiosPelicula")
+                           .addParameter(movie.getNombre())
+                           .addParameter(movie.getDuration())
+                           .addParameter(movie.getPublic_objetive())
+                           .addParameter(movie.getDirectors())
+                           .addParameter(movie.getActors());
+
+        if (movie.getLogo().isEmpty() == false) {
+            callableProcedure.addParameter("resources/" + randomId + "_" + movie.getLogo());
+        } else {
+            callableProcedure.addParameter(null);
+        }
         
+        callableProcedure.addParameter(movie.getId());
+        
+        callableProcedure.execute();
     }
     
     public boolean doesMovieExist(int id) {
@@ -68,5 +87,31 @@ public class PeliculaModel {
     
     public int getLastMovieLogoIdInserted() {
         return lastRandomId;
+    }
+    
+    public PeliculaDto getMovieById(int id) throws Exception {
+        ResultSet rs = orm.simpleQuery("SELECT * FROM peliculas WHERE id=" + id);
+        
+        if (rs == null) {
+            return null;
+        }
+        
+        rs.next();
+        
+        String nombreFromDb = rs.getString("nombre");
+        String duracionFromDb = rs.getString("duracion");
+        String publicoFromDb = rs.getString("publico");
+        String directoresFromDb = rs.getString("directores");
+        String actoresFromDb = rs.getString("actores");
+        String filepathFromDb = rs.getString("logo_filepath");
+
+        return new PeliculaBuilder()
+                                    .withNombre(nombreFromDb)
+                                    .withDuration(duracionFromDb)
+                                    .withPublicObjetive(publicoFromDb)
+                                    .withDirectors(directoresFromDb)
+                                    .withActors(actoresFromDb)
+                                    .withLogo(filepathFromDb)
+                                    .build();
     }
 }

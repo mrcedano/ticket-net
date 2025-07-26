@@ -37,4 +37,11 @@ public class CallableProcedure {
         
         return this;
     }
+    
+    public CallableProcedure addParameter(int value) {
+        parameters.add(String.valueOf(value));
+        
+        return this;
+    }
+    
 }

@@ -108,7 +108,6 @@ public class PanelPeliculas extends javax.swing.JFrame {
                 }
             });
         } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }//GEN-LAST:event_consultar_btnActionPerformed
 

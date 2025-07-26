@@ -4,15 +4,25 @@
  */
 package AdministradorVistas;
 
+import Builders.PeliculaBuilder;
 import DTOs.PeliculaDto;
 import Modelo.PeliculaModel;
 import Utils.ImageCellRenderer;
+import Utils.ImageMagic;
 import Utils.Media;
+import Utils.SimpleFiles;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -56,9 +66,9 @@ public class SearchMovie extends javax.swing.JFrame {
                 int id = movie.getId();
                 String title = movie.getNombre();
                 String duration = movie.getDuration();
-                String created = "01/01/2005"; // Se añadirá este atributo después en el DTO
+                String publicObjective = movie.getPublic_objetive();
 
-                Object dto[] = new Object[]{id, title, duration, created, Media.Trashbin, Media.Pen};
+                Object dto[] = new Object[]{id, title, duration, publicObjective, Media.Trashbin, Media.Pen};
 
                 tableModel.addRow(dto);
             }
@@ -123,34 +133,120 @@ public class SearchMovie extends javax.swing.JFrame {
         });
     }
 
-   public void dialogToUpdateMovie(int id, int row) {
-    JTextField titleField = new JTextField((String) tableModel.getValueAt(row, 1));
-    
-    String currentDuration = String.valueOf(tableModel.getValueAt(row, 2)); 
-    JTextField durationField = new JTextField(currentDuration);
+    private JLabel logoImageLabel;
+    private String logoFileName, logoFilePath;
+    private File file;
 
-    JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
-    panel.add(new JLabel("Título:"));
-    panel.add(titleField);
-    panel.add(new JLabel("Duración:"));
-    panel.add(durationField);
+    public void dialogToUpdateMovie(int id, int row) throws Exception {
+        PeliculaDto movie = peliculaModel.getMovieById(id);
 
-    int result = JOptionPane.showConfirmDialog(
-        null,
-        panel, 
-        "Actualizar película: ", 
-        JOptionPane.OK_CANCEL_OPTION, 
-        JOptionPane.PLAIN_MESSAGE
-    );
+        JTextField titleField = new JTextField((String) tableModel.getValueAt(row, 1));
+        JTextField durationField = new JTextField((String) tableModel.getValueAt(row, 2));
+        JTextField publicoField = new JTextField((String) tableModel.getValueAt(row, 3));
 
-    if (result == JOptionPane.OK_OPTION) {
-        String newTitle = titleField.getText();
-        String newDuration = durationField.getText();
+        JTextField actorsField = new JTextField(movie.getActors());
+        JTextField directorsField = new JTextField(movie.getDirectors());
+
+        logoFilePath = movie.getLogo();
+        String initialFilePath = logoFilePath;
+
+        JButton logoButton = new JButton("Seleccionar archivo de logo");
+
+        logoButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+
+            fileChooser.setDialogTitle("Seleccionar archivo de logo");
+
+            int userSelection = fileChooser.showOpenDialog(null);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                file = fileChooser.getSelectedFile();
+                logoFilePath = file.getAbsolutePath();
+                logoFileName = file.getName();
+
+                logoImageLabel.setIcon(ImageMagic.resizeImage(new ImageIcon(logoFilePath), 120, 180));
+            }
+
+            revalidate();
+            repaint();
+        });
+
+        if (logoFilePath != null && !logoFilePath.isEmpty()) {
+            ImageIcon logoIcon = new ImageIcon(logoFilePath);
+            ImageIcon logoIconResized = ImageMagic.resizeImage(logoIcon, 120, 180);
+            logoImageLabel = new JLabel(logoIconResized);
+        } else {
+            logoImageLabel = new JLabel("Sin imagen");
+        }
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        logoImageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(logoImageLabel);
+        mainPanel.add(Box.createVerticalStrut(20));
+
+        JPanel fieldsPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+        fieldsPanel.add(new JLabel("Título:"));
+        fieldsPanel.add(titleField);
+        fieldsPanel.add(new JLabel("Duración:"));
+        fieldsPanel.add(durationField);
+        fieldsPanel.add(new JLabel("Actores:"));
+        fieldsPanel.add(actorsField);
+        fieldsPanel.add(new JLabel("Directores:"));
+        fieldsPanel.add(directorsField);
+        fieldsPanel.add(new JLabel("Publico:"));
+        fieldsPanel.add(publicoField);
+        fieldsPanel.add(new JLabel("Logo:"));
+        fieldsPanel.add(logoButton);
+
+        mainPanel.add(fieldsPanel);
+
+        int result = JOptionPane.showConfirmDialog(
+                null,
+                mainPanel,
+                "Actualizar película: ",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            String newTitle = titleField.getText();
+            String newDuration = durationField.getText();
+            String newActors = actorsField.getText();
+            String newDirectors = directorsField.getText();
+            String newPublico = publicoField.getText();
 
             tableModel.setValueAt(newTitle, row, 1);
             tableModel.setValueAt(newDuration, row, 2);
+            tableModel.setValueAt(newPublico, row, 3);
+
+            PeliculaBuilder movieBuilder = new PeliculaBuilder();
+
+            if (!initialFilePath.equals(logoFilePath)) {
+                String newLogo = logoFileName;
+                
+                movieBuilder.withLogo(newLogo);
+            }
+            
+            PeliculaDto updatedMovie = movieBuilder               
+                                                .withId(id)
+                                                .withNombre(newTitle)
+                                                .withDuration(newDuration)
+                                                .withActors(newActors)
+                                                .withDirectors(newDirectors)
+                                                .withPublicObjetive(newPublico)
+                                                .build();
+
+            peliculaModel.updateMovie(updatedMovie);
+            
+            if (!initialFilePath.equals(logoFilePath)) {
+                int uniqueImgId = peliculaModel.getLastMovieLogoIdInserted();
+                
+                SimpleFiles.storeImageAtResources(file, uniqueImgId, logoFileName);
+            }
+        }
     }
- }
 
     public void dialogToViewMovie(int id) {
 
@@ -192,7 +288,6 @@ public class SearchMovie extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        regresar_btn = new javax.swing.JButton();
         buscar_btn = new javax.swing.JButton();
         buscador_txtfield = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -200,13 +295,6 @@ public class SearchMovie extends javax.swing.JFrame {
         jTable2 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        regresar_btn.setText("Regresar");
-        regresar_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                regresar_btnActionPerformed(evt);
-            }
-        });
 
         buscar_btn.setText("Buscar");
         buscar_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -223,7 +311,7 @@ public class SearchMovie extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Título", "Duración", "Fecha. creación", "B", "U"
+                "Id", "Título", "Duración", "Publico", "B", "U"
             }
         ) {
             Class[] types = new Class [] {
@@ -272,13 +360,8 @@ public class SearchMovie extends javax.swing.JFrame {
                         .addGap(24, 24, 24)))
                 .addGap(69, 69, 69))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(206, 206, 206)
-                        .addComponent(regresar_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(177, 177, 177)
-                        .addComponent(jLabel1)))
+                .addGap(177, 177, 177)
+                .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -292,17 +375,11 @@ public class SearchMovie extends javax.swing.JFrame {
                     .addComponent(buscador_txtfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(regresar_btn)
-                .addGap(31, 31, 31))
+                .addGap(72, 72, 72))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void regresar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresar_btnActionPerformed
-
-    }//GEN-LAST:event_regresar_btnActionPerformed
 
     private void buscar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscar_btnActionPerformed
 
@@ -314,6 +391,5 @@ public class SearchMovie extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JButton regresar_btn;
     // End of variables declaration//GEN-END:variables
 }

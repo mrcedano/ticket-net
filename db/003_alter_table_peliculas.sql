@@ -1,0 +1,1 @@
+ALTER TABLE peliculas MODIFY COLUMN duracion VARCHAR(25) NOT NULL;
