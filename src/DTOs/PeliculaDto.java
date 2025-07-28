@@ -1,5 +1,7 @@
 package DTOs;
 
+import java.util.Objects;
+
 public class PeliculaDto {
     private int id;
     private String nombre;
@@ -45,5 +47,22 @@ public class PeliculaDto {
 
     public String getDirectors() {
         return directors;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PeliculaDto that = (PeliculaDto) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

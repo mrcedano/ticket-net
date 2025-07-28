@@ -3,6 +3,7 @@ package AdministradorVistas;
 import JObjects.SideBarBuilder;
 import Utils.Global;
 import Vista.InicioSesion;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JPanel;
@@ -44,6 +45,11 @@ public class Panel extends javax.swing.JFrame {
         Funciones.setText("Funciones");
 
         cartelaras_btn.setText("Carteleras");
+        cartelaras_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cartelaras_btnActionPerformed(evt);
+            }
+        });
 
         peliculas_btn.setText("Peliculas");
         peliculas_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -59,14 +65,13 @@ public class Panel extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(190, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(192, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(salas_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
                         .addComponent(Funciones, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(190, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(cartelaras_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(38, 38, 38)
                         .addComponent(peliculas_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -137,6 +142,25 @@ public class Panel extends javax.swing.JFrame {
         
         panelPeliculas.setVisible(true);
     }//GEN-LAST:event_peliculas_btnActionPerformed
+
+    private void cartelaras_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartelaras_btnActionPerformed
+        setVisible(false);
+        
+        PanelCarteleras panelCarteleras = new PanelCarteleras();
+        
+        panelCarteleras.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        
+        panelCarteleras.setVisible(true);
+        
+        panelCarteleras.addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowClosing(WindowEvent e) {
+             panelCarteleras.setVisible(false);
+             setVisible(true);
+        }
+    });
+        
+    }//GEN-LAST:event_cartelaras_btnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Funciones;

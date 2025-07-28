@@ -35,7 +35,6 @@ public class SimpleORM {
     }
     
     public ResultSet simpleQuery(String query) throws SQLException {
-        // statement.clearBatch();
         ResultSet rs = statement.executeQuery(query);
         
         if (!rs.isBeforeFirst()) {
@@ -47,6 +46,10 @@ public class SimpleORM {
     
     public int simpleUpdate(String query) throws SQLException {
        return statement.executeUpdate(query);
+    }
+    
+    public int simpleInsert(String query) throws SQLException {
+        return statement.executeUpdate(query);
     }
     
     public void closeConnection() throws SQLException {

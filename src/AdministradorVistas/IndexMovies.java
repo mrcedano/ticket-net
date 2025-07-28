@@ -30,7 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-public class SearchMovie extends javax.swing.JFrame {
+public class IndexMovies extends javax.swing.JFrame {
 
     private enum RowEvent {
         DELETE_ROW,
@@ -43,7 +43,7 @@ public class SearchMovie extends javax.swing.JFrame {
 
     private final DefaultTableModel tableModel;
 
-    public SearchMovie() throws Exception {
+    public IndexMovies() throws Exception {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("TicketNet | Buscador de Películas");

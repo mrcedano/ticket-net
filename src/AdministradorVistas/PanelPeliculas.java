@@ -70,7 +70,7 @@ public class PanelPeliculas extends javax.swing.JFrame {
     private void consultar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultar_btnActionPerformed
         try {
             setVisible(false);
-            SearchMovie searchMovie = new SearchMovie();
+            IndexMovies searchMovie = new IndexMovies();
             
             searchMovie.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
             searchMovie.setVisible(true);

@@ -37,6 +37,37 @@ public class PeliculaModel {
         return moviesList.toArray(PeliculaDto[]::new);
     }
     
+    public PeliculaDto[] getMovies() throws Exception {
+        List<PeliculaDto> movies = new ArrayList<>();
+        
+        ResultSet rs = orm.simpleProcedure("obtenerPeliculas")
+                                          .executeWithResultSet();
+        
+        if (rs == null) {
+            return movies.toArray(PeliculaDto[]::new);
+        }
+        
+        while(rs.next()) {
+            int idFromDb = rs.getInt("id");
+            String nombreFromDb = rs.getString("nombre");
+            String publicoFromDb = rs.getString("publico");
+            String portadaFromDb = rs.getString("logo_filepath");
+            String duracionFromDb = rs.getString("duracion");
+            
+            PeliculaDto pelicula = new PeliculaBuilder()
+                                        .withId(idFromDb)
+                                        .withNombre(nombreFromDb)
+                                        .withPublicObjetive(publicoFromDb)
+                                        .withLogo(portadaFromDb)
+                                        .withDuration(duracionFromDb)
+                                        .build();
+            
+            movies.add(pelicula);
+        }
+        
+        return movies.toArray(PeliculaDto[]::new);
+    }
+    
     public void addMovie(PeliculaDto pelicula) throws Exception {
        short randomId = (short) (new java.util.Random().nextInt(1000 - 0 + 1) + 0);
        lastRandomId = randomId;
