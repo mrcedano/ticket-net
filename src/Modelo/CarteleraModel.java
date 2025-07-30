@@ -239,7 +239,7 @@ public class CarteleraModel {
              String value = String.format(format, moviesId[i], id);
             
              values.append(value);
-             
+                 
             if (i != moviesId.length - 1) {
                 values.append(",");
             }
@@ -251,7 +251,7 @@ public class CarteleraModel {
     }
 
     public boolean isThereACarteleraActivated() throws Exception {
-        return getCartelerasActivated() > 0;
+        return getNumberOfCartelerasActivated() > 0;
     }
     
     public void removeMoviesFromCarteleraById(int id) throws Exception {
@@ -260,7 +260,7 @@ public class CarteleraModel {
                                                            .execute();
     }
 
-    public int getCartelerasActivated() throws Exception {
+    public int getNumberOfCartelerasActivated() throws Exception {
         ResultSet rs = orm.simpleProcedure("obtenerCartelerasActivas")
                 .executeWithResultSet();
 
@@ -271,5 +271,30 @@ public class CarteleraModel {
         rs.next();
 
         return rs.getInt("carteleras_activadas");
+    }
+    
+    public CarteleraDto getCarteleraActivated() throws Exception {
+        ResultSet rs = orm.simpleProcedure("obtenerCarteleraActiva")
+                                    .executeWithResultSet();
+        
+        if (rs == null) {
+            return null;
+        }
+        
+        rs.next();
+        
+        int id = rs.getInt("id");
+        LocalDate activeSince = rs.getTimestamp("activadesde").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate activeUntil = rs.getTimestamp("activahasta").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int isActivated = rs.getInt("estaActivado");
+    
+        CarteleraDto carteleraDto = new CarteleraBuilder()
+                                                        .withId(id)
+                                                        .withFromDate(activeSince)
+                                                        .withToDate(activeUntil)
+                                                        .withIsActivated(isActivated)
+                                                        .build();
+ 
+        return carteleraDto;
     }
 }

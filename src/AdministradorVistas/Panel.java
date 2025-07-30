@@ -43,6 +43,11 @@ public class Panel extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         Funciones.setText("Funciones");
+        Funciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FuncionesActionPerformed(evt);
+            }
+        });
 
         cartelaras_btn.setText("Carteleras");
         cartelaras_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -158,9 +163,30 @@ public class Panel extends javax.swing.JFrame {
              panelCarteleras.setVisible(false);
              setVisible(true);
         }
-    });
-        
+      });
     }//GEN-LAST:event_cartelaras_btnActionPerformed
+
+    private void FuncionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FuncionesActionPerformed
+        try {
+            setVisible(false);
+            
+            PanelFunciones panelFunciones = new PanelFunciones();
+            
+            panelFunciones.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            
+            panelFunciones.setVisible(true);
+            
+            panelFunciones.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    panelFunciones.setVisible(false);
+                    setVisible(true);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_FuncionesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Funciones;

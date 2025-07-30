@@ -276,13 +276,13 @@ public class AddMoviesToCartelera extends JFrame {
 
         Runnable handleSelectionChange = () -> {
             if (movieCheckbox.isSelected()) {
-                if (!selectedMoviesIds.contains(pelicula.getId())) {
+                if (!selectedMoviesIds.contains(pelicula)) {
                     selectedMoviesIds.add(pelicula.getId());
                 }
             } else {
-                selectedMoviesIds.removeIf(id -> id == pelicula.getId());
+                selectedMoviesIds.removeIf(id -> pelicula.getId() == id);
             }
-
+            
             updatePanelAppearance(moviePanel, movieCheckbox.isSelected());
         };
 
@@ -339,10 +339,6 @@ public class AddMoviesToCartelera extends JFrame {
         titleLabel.addMouseListener(clickListener);
 
         updatePanelAppearance(moviePanel, isChecked);
-
-        if (isChecked && !selectedMoviesIds.contains(pelicula.getId())) {
-            selectedMoviesIds.add(pelicula.getId());
-        }
 
         return moviePanel;
     }
