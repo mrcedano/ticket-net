@@ -1,0 +1,1 @@
+ALTER TABLE salas ADD COLUMN estaDisponible INT DEFAULT 1;

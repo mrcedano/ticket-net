@@ -1,12 +1,12 @@
 package Builders;
 
 import DTOs.FuncionDto;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class FuncionBuilder {
     private int id;
-    private LocalDate activoDesde;
-    private LocalDate activeHasta;
+    private LocalDateTime activoDesde;
+    private LocalDateTime activeHasta;
     private int pelicula_id;
     private int sala_id;
     private int cartelera_id;
@@ -16,12 +16,12 @@ public class FuncionBuilder {
         return this;
     }
 
-    public FuncionBuilder withActivoDesde(LocalDate activoDesde) {
+    public FuncionBuilder withActivoDesde(LocalDateTime activoDesde) {
         this.activoDesde = activoDesde;
         return this;
     }
 
-    public FuncionBuilder withActiveHasta(LocalDate activeHasta) {
+    public FuncionBuilder withActivoHasta(LocalDateTime activeHasta) {
         this.activeHasta = activeHasta;
         return this;
     }

@@ -4,7 +4,7 @@ package Modelo;
 import Builders.FuncionBuilder;
 import DTOs.FuncionDto;
 import java.sql.ResultSet;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class FuncionModel {
@@ -16,19 +16,18 @@ public class FuncionModel {
     }
     
     public FuncionDto getLatestFuncionFromCarteleraById(int cartelera_id) throws Exception {
+      
         ResultSet rs = orm.simpleProcedure("obtenerUltimaFuncionDeCarteleraPorId")
                             .addParameter(cartelera_id)
                             .executeWithResultSet();
         
-        if (rs == null) {
+        if(rs.next() == false) {
             return null;
         }
         
-        rs.next();
-        
         int idFromDb = rs.getInt("id");
-        LocalDate activeSinceFromDb = rs.getTimestamp("activadesde").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate activeUntilFromDb = rs.getTimestamp("activahasta").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDateTime activeSinceFromDb = rs.getTimestamp("activadesde").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime activeUntilFromDb = rs.getTimestamp("activahasta").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         int pelicula_idFromDb = rs.getInt("pelicula_id");
         int sala_idFromDb = rs.getInt("sala_id");
         int cartelera_idFromDb = rs.getInt("cartelera_id");
@@ -36,7 +35,7 @@ public class FuncionModel {
         FuncionDto funcionDto = new FuncionBuilder()
                                     .withId(idFromDb)
                                     .withActivoDesde(activeSinceFromDb)
-                                    .withActiveHasta(activeUntilFromDb)
+                                    .withActivoHasta(activeUntilFromDb)
                                     .withPeliculaId(pelicula_idFromDb)
                                     .withSalaId(sala_idFromDb)
                                     .withCarteleraId(cartelera_idFromDb)
@@ -53,5 +52,21 @@ public class FuncionModel {
         }
         
         return funcionDto.getId();
+    }
+    
+    public void createFuncion(FuncionDto funcionDto) throws Exception {
+        LocalDateTime activeSince = funcionDto.getActivoDesde();
+        LocalDateTime activeUntil = funcionDto.getActiveHasta();
+        int peliculaId = funcionDto.getPelicula_id();
+        int salaId = funcionDto.getSala_id();
+        int carteleraId = funcionDto.getCartelera_id();
+        
+        orm.simpleProcedure("CrearFuncion")
+                            .addParameter(activeSince.toString())
+                            .addParameter(activeUntil.toString())
+                            .addParameter(peliculaId)
+                            .addParameter(salaId)
+                            .addParameter(carteleraId)
+                            .execute();
     }
 }

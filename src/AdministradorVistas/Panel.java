@@ -64,6 +64,11 @@ public class Panel extends javax.swing.JFrame {
         });
 
         salas_btn.setText("Salas");
+        salas_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salas_btnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,6 +192,29 @@ public class Panel extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_FuncionesActionPerformed
+
+    private void salas_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salas_btnActionPerformed
+        try {
+            setVisible(false);
+            
+            PanelSalas panelSalas = new PanelSalas();
+            
+            panelSalas.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            
+            panelSalas.setVisible(true);
+            
+            panelSalas.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    panelSalas.setVisible(false);
+                    setVisible(true);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+    }//GEN-LAST:event_salas_btnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Funciones;

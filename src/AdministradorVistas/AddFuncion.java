@@ -4,14 +4,18 @@
  */
 package AdministradorVistas;
 
+import Builders.FuncionBuilder;
 import DTOs.CarteleraDto;
 import DTOs.FuncionDto;
 import DTOs.PeliculaDto;
+import DTOs.SalaDto;
 import Modelo.CarteleraModel;
 import Modelo.FuncionModel;
+import Modelo.SalaModel;
 import Utils.ImageMagic;
 import com.raven.datechooser.DateChooser;
-import javax.swing.ComboBoxModel;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -28,6 +32,7 @@ public class AddFuncion extends javax.swing.JFrame {
    
     private CarteleraModel carteleraModel;
     private FuncionModel funcionModel;
+    private SalaModel salaModel;
     
     private CarteleraDto carteleraDto;
     private FuncionDto funcionDto;
@@ -43,6 +48,7 @@ public class AddFuncion extends javax.swing.JFrame {
         dateChooser = new DateChooser();
         carteleraModel = new CarteleraModel();
         funcionModel = new FuncionModel();
+        salaModel = new SalaModel();
 
         dateChooser.setTextField(fecha_inicio_txtfld);
 
@@ -60,8 +66,11 @@ public class AddFuncion extends javax.swing.JFrame {
         }
 
         PeliculaDto[] peliculasFromCartelera = carteleraModel.getPeliculasFromCarteleraById(carteleraDto.getId());
+        SalaDto[] salas = salaModel.getSalas();
+        
         peliculas_cmbx.setModel(new DefaultComboBoxModel<>(peliculasFromCartelera));
-
+        salas_cmbx.setModel(new DefaultComboBoxModel<>(salas));
+        
         peliculas_cmbx.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,9 +113,9 @@ public class AddFuncion extends javax.swing.JFrame {
         final_hour_lbl = new javax.swing.JLabel();
         hora_inicio_txtfl = new javax.swing.JTextField();
         sala_lbl = new javax.swing.JLabel();
-        salas_cmbx = new javax.swing.JComboBox<>();
         crear_jbtn = new javax.swing.JButton();
         regresar_jbtn = new javax.swing.JButton();
+        salas_cmbx = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,8 +150,6 @@ public class AddFuncion extends javax.swing.JFrame {
 
         sala_lbl.setText("Sala");
 
-        salas_cmbx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         crear_jbtn.setText("Crear");
         crear_jbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,6 +164,8 @@ public class AddFuncion extends javax.swing.JFrame {
             }
         });
 
+        salas_cmbx.setModel(new DefaultComboBoxModel<SalaDto>());
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -164,9 +173,9 @@ public class AddFuncion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(movie_poster_jlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
+                        .addGap(28, 28, 28)
+                        .addComponent(movie_poster_jlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -213,9 +222,9 @@ public class AddFuncion extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(fecha_inicio_txtfld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(starting_hour_lbl)
-                            .addComponent(hora_inicio_txtfl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(hora_inicio_txtfl, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(final_hour_lbl)
@@ -243,7 +252,35 @@ public class AddFuncion extends javax.swing.JFrame {
     }//GEN-LAST:event_hora_inicio_txtflActionPerformed
 
     private void crear_jbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_jbtnActionPerformed
-        // TODO add your handling code here:
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        
+        try {
+            String date = fecha_inicio_txtfld.getText();
+            String startingHour = hora_inicio_txtfl.getText();
+            String finalHour = hora_final_txtfld.getText();
+            
+            LocalDateTime activoDesde = LocalDateTime.parse(date + " " + startingHour, formatter);
+            LocalDateTime activoHasta = LocalDateTime.parse(date + " " + finalHour, formatter);
+            
+            int peliculaId = ((PeliculaDto) peliculas_cmbx.getSelectedItem()).getId();
+            int carteleraId = carteleraDto.getId();
+           
+            int sala = 1;
+
+            FuncionDto funcionDto = new FuncionBuilder()
+                    .withActivoDesde(activoDesde)
+                    .withActivoHasta(activoHasta)
+                    .withPeliculaId(peliculaId)
+                    .withCarteleraId(carteleraId)
+                    .withSalaId(sala)
+                    .build();
+
+            funcionModel.createFuncion(funcionDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_crear_jbtnActionPerformed
 
     private void regresar_jbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresar_jbtnActionPerformed
@@ -270,7 +307,7 @@ public class AddFuncion extends javax.swing.JFrame {
     private javax.swing.JComboBox<PeliculaDto> peliculas_cmbx;
     private javax.swing.JButton regresar_jbtn;
     private javax.swing.JLabel sala_lbl;
-    private javax.swing.JComboBox<String> salas_cmbx;
+    private javax.swing.JComboBox<SalaDto> salas_cmbx;
     private javax.swing.JLabel starting_hour_lbl;
     // End of variables declaration//GEN-END:variables
 }

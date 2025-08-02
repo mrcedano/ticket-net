@@ -1,16 +1,16 @@
 package DTOs;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class FuncionDto {
-    private int id;
-    private LocalDate activoDesde;
-    private LocalDate activeHasta;
-    private int pelicula_id;
-    private int sala_id;
-    private int cartelera_id;
+    private int id = 0;
+    private LocalDateTime activoDesde = null;
+    private LocalDateTime activeHasta = null;
+    private int pelicula_id = 0;
+    private int sala_id = 0;
+    private int cartelera_id = 0;
 
-    public FuncionDto(int id, LocalDate activoDesde, LocalDate activeHasta, int pelicula_id, int sala_id, int cartelera_id) {
+    public FuncionDto(int id, LocalDateTime activoDesde, LocalDateTime activeHasta, int pelicula_id, int sala_id, int cartelera_id) {
         this.id = id;
         this.activoDesde = activoDesde;
         this.activeHasta = activeHasta;
@@ -23,11 +23,11 @@ public class FuncionDto {
         return id;
     }
 
-    public LocalDate getActivoDesde() {
+    public LocalDateTime getActivoDesde() {
         return activoDesde;
     }
 
-    public LocalDate getActiveHasta() {
+    public LocalDateTime getActiveHasta() {
         return activeHasta;
     }
 
