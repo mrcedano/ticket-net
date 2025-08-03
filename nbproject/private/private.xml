@@ -12,9 +12,12 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/cedsc/Documents/ticket-net/src/AdministradorVistas/IndexSalas.java</file>
-            <file>file:/C:/Users/cedsc/Documents/ticket-net/src/Modelo/PeliculaModel.java</file>
             <file>file:/C:/Users/cedsc/Documents/ticket-net/src/Modelo/SalaModel.java</file>
+            <file>file:/C:/Users/cedsc/Documents/ticket-net/src/AdministradorVistas/AddFuncion.java</file>
+            <file>file:/C:/Users/cedsc/Documents/ticket-net/src/DTOs/PeliculaDto.java</file>
+            <file>file:/C:/Users/cedsc/Documents/ticket-net/src/DTOs/SalaDto.java</file>
+            <file>file:/C:/Users/cedsc/Documents/ticket-net/src/AdministradorVistas/PanelFunciones.java</file>
+            <file>file:/C:/Users/cedsc/Documents/ticket-net/src/AdministradorVistas/AddSala.java</file>
         </group>
     </open-files>
 </project-private>

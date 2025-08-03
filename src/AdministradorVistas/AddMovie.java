@@ -3,6 +3,7 @@ package AdministradorVistas;
 import Builders.PeliculaBuilder;
 import DTOs.PeliculaDto;
 import Modelo.PeliculaModel;
+import Utils.ImageMagic;
 import Utils.SimpleFiles;
 import java.io.File;
 import java.nio.file.Files;
@@ -10,11 +11,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class AddMovie extends javax.swing.JFrame {
     private File logo; 
+    
+    JFrame parent = null;
             
     public AddMovie() {
         initComponents();
@@ -56,6 +60,7 @@ public class AddMovie extends javax.swing.JFrame {
         BtnConfirmar1 = new javax.swing.JButton();
         BtnRegresar1 = new javax.swing.JButton();
         imageChooser = new javax.swing.JButton();
+        movie_poster_jlbl = new javax.swing.JLabel();
 
         jLabel1.setText("Nombre:");
 
@@ -216,14 +221,14 @@ public class AddMovie extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addComponent(BtnRegresar1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(106, 106, 106)
                         .addComponent(BtnConfirmar1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
+                        .addGap(49, 49, 49)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel11)
@@ -249,14 +254,21 @@ public class AddMovie extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(txtDuracion1)
-                                        .addComponent(txtNombre1)))))
-                        .addGap(17, 17, 17)))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(0, 0, Short.MAX_VALUE))))))))
                 .addContainerGap(38, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(movie_poster_jlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(141, 141, 141))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(132, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
+                .addComponent(movie_poster_jlbl, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -280,7 +292,7 @@ public class AddMovie extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(imageChooser))
-                .addGap(25, 25, 25)
+                .addGap(13, 13, 13)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnConfirmar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BtnRegresar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -352,6 +364,12 @@ public class AddMovie extends javax.swing.JFrame {
             peliculaModel.addMovie(peliculaDto);
 
             SimpleFiles.storeImageAtResources(logo, peliculaModel.getLastMovieLogoIdInserted(), logoName);
+            
+            JOptionPane.showMessageDialog(this, "Se ha creado la película exítosamente");
+            
+            setVisible(false);
+            parent.setVisible(true);
+            
         } catch(Exception e ) {
             e.printStackTrace();
         }
@@ -378,6 +396,7 @@ public class AddMovie extends javax.swing.JFrame {
             if (result == JFileChooser.APPROVE_OPTION) {
                 logo = fileChooser.getSelectedFile();
                 ImageIcon imageIcon = new ImageIcon(logo.getAbsolutePath());
+                movie_poster_jlbl.setIcon(ImageMagic.resizeImage(imageIcon, 168, 170));
                 JLabel imageLabel = new JLabel(imageIcon);
                 add(imageLabel);
                 revalidate();
@@ -405,6 +424,7 @@ public class AddMovie extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel movie_poster_jlbl;
     private javax.swing.JTextField txtActores;
     private javax.swing.JTextField txtActores1;
     private javax.swing.JTextField txtDirectores;

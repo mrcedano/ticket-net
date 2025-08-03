@@ -14,10 +14,6 @@ import static Enums.UserTypes.CAJERO;
 import static Enums.UserTypes.CLIENTE;
 import Utils.Global;
 import java.awt.Color;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -50,7 +46,6 @@ public class InicioSesion extends javax.swing.JFrame {
             new OlvidoContrasenia().setVisible(true);
             dispose();
         }
-        
     });
 
         setLocationRelativeTo(null);

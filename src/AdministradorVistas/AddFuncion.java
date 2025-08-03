@@ -266,17 +266,23 @@ public class AddFuncion extends javax.swing.JFrame {
             int peliculaId = ((PeliculaDto) peliculas_cmbx.getSelectedItem()).getId();
             int carteleraId = carteleraDto.getId();
            
-            int sala = 1;
+            int salaId = ( (SalaDto) salas_cmbx.getSelectedItem() ).getId();
 
             FuncionDto funcionDto = new FuncionBuilder()
                     .withActivoDesde(activoDesde)
                     .withActivoHasta(activoHasta)
                     .withPeliculaId(peliculaId)
                     .withCarteleraId(carteleraId)
-                    .withSalaId(sala)
+                    .withSalaId(salaId)
                     .build();
 
             funcionModel.createFuncion(funcionDto);
+            
+            JOptionPane.showMessageDialog(this, "Función creada exitosamente");
+            
+            setVisible(false);
+            
+            parent.setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
         }

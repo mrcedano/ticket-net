@@ -118,6 +118,8 @@ public class PanelPeliculas extends javax.swing.JFrame {
         addMovie.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addMovie.setVisible(true);
         
+        addMovie.parent = this;
+        
         addMovie.addWindowListener(new WindowListener() {
             @Override
             public void windowClosing(WindowEvent e) {

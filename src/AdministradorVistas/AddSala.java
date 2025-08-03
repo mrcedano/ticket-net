@@ -22,7 +22,6 @@ public class AddSala extends javax.swing.JFrame {
         initComponents();
         salaModel = new SalaModel();
         setLocationRelativeTo(null);
-
     }
 
     @SuppressWarnings("unchecked")
@@ -129,7 +128,7 @@ public class AddSala extends javax.swing.JFrame {
     }//GEN-LAST:event_tipo_jtxtfldActionPerformed
 
     private void crear_sala_jbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_sala_jbtnActionPerformed
-        String nombre = nombre_jtxtfld.getText();
+        String nombre = nombre_jtxtfld.getText();   
         String tipo = tipo_jtxtfld.getText();
         int cantAsientos = Integer.parseInt(asientos_jtxtfld.getText());
 

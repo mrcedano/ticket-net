@@ -5,7 +5,6 @@
 package AdministradorVistas;
 
 import Modelo.CarteleraModel;
-import com.raven.datechooser.DateChooser;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
@@ -18,13 +17,12 @@ public class PanelFunciones extends javax.swing.JFrame {
 
     private CarteleraModel carteleraModel;
 
-
     public PanelFunciones() throws Exception {
         initComponents();
         setLocationRelativeTo(null);
-        
+
         setTitle("TicketNet | Panel de Funciones");
-        
+
         carteleraModel = new CarteleraModel();
 
     }
@@ -82,7 +80,39 @@ public class PanelFunciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void consultar_funcion_jbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultar_funcion_jbtnActionPerformed
-        // TODO add your handling code here:
+        try {
+            if (carteleraModel.isThereACarteleraActivated() == false) {
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "¡No hay una cartelera activada ahora mismo!",
+                        "Advertencia",
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                return;
+            }
+
+            IndexFunciones indexFunciones = new IndexFunciones();
+
+            setVisible(false);
+            indexFunciones.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+            indexFunciones.setVisible(true);
+            indexFunciones.parent = this;
+
+            indexFunciones.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    indexFunciones.setVisible(false);
+
+                    setVisible(true);
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_consultar_funcion_jbtnActionPerformed
 
     private void crear_funcion_jbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_funcion_jbtnActionPerformed
@@ -96,27 +126,27 @@ public class PanelFunciones extends javax.swing.JFrame {
                         "Advertencia",
                         JOptionPane.WARNING_MESSAGE
                 );
-                
+
                 return;
             }
-            
+
             AddFuncion addFuncion = new AddFuncion();
-            
+
             setVisible(false);
             addFuncion.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-            
+
             addFuncion.setVisible(true);
             addFuncion.parent = this;
-            
+
             addFuncion.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     addFuncion.setVisible(false);
-                    
+
                     setVisible(true);
                 }
             });
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
