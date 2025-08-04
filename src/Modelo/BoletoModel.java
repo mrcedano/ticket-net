@@ -4,7 +4,9 @@ import DTOs.BoletoDto;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BoletoModel {
 
@@ -38,6 +40,37 @@ public class BoletoModel {
                                          .addParameter(boleto.getUsuario_id())
                                          .addParameter(boleto.getAsientos())
                                          .execute();
+    }
+    
+    public Map<String, Object>[] getBoletosCompradosByUserId(int userId) throws Exception {
+        List<Map<String, Object>> boletosWithPeliculasAndFunciones = new ArrayList<>();
+        
+        ResultSet rs = orm.simpleProcedure("obtenerBoletosCompradosPorUsuarioId")
+                                                .addParameter(userId)
+                                                .executeWithResultSet();
+        
+        while(rs.next()) {
+            int funcionId = rs.getInt("funcion_id");
+            int cantNinos = rs.getInt("ninos");
+            int cantAdultos = rs.getInt("adultos");
+            int total = rs.getInt("total");
+            String pelicula = rs.getString("pelicula");
+            String logo = rs.getString("logo");
+
+            
+            Map<String, Object> boleto = new HashMap<String, Object>();
+            
+            boleto.put("funcionId", funcionId);
+            boleto.put("cantNinos", cantNinos);
+            boleto.put("cantAdultos", cantAdultos);
+            boleto.put("total", total);
+            boleto.put("pelicula", pelicula);
+            boleto.put("logo", logo);
+            
+            boletosWithPeliculasAndFunciones.add(boleto);
+        }
+        
+       return boletosWithPeliculasAndFunciones.toArray(new Map[0]);
     }
 
     public int getNumberOfSelectedAsientosByFuncionId(int funcionId) throws Exception {

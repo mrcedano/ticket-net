@@ -1,5 +1,6 @@
 package ClienteVistas;
 
+import DTOs.CarteleraDto;
 import DTOs.FuncionDto;
 import DTOs.PeliculaDto;
 import JObjects.SideBarBuilder;
@@ -8,6 +9,7 @@ import Modelo.FuncionModel;
 import Utils.Global;
 import Vista.InicioSesion;
 import VentaBoletosVistas.CompraBoletos;
+import com.raven.datechooser.DateChooser;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -15,6 +17,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -79,9 +82,9 @@ public class Cartelera extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(profile_pnl, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(funciones_jtxtpn, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -92,10 +95,12 @@ public class Cartelera extends javax.swing.JFrame {
 
         setLocationRelativeTo(null);
         setTitle("TicketNet | Cartelera de Películas | Usuario << " + Global.user.getUsername() + " >>");
+        
+        DateChooser dateChooser = new DateChooser();
 
         CarteleraModel carteleraModel = new CarteleraModel();
         PeliculaDto[] peliculas = carteleraModel.getPeliculasFromCarteleraById(carteleraModel.getCarteleraActivated().getId());
-        int carteleraId = carteleraModel.getCarteleraActivated().getId();
+        CarteleraDto cartelera = carteleraModel.getCarteleraActivated();
 
         soon_movies_pnl.setLayout(new BoxLayout(soon_movies_pnl, BoxLayout.LINE_AXIS));
         for (int i = 0; i < peliculas.length; i++) {
@@ -137,7 +142,7 @@ public class Cartelera extends javax.swing.JFrame {
         moviesContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         for (PeliculaDto pelicula : peliculas) {
-            FuncionDto[] funciones = funcionModel.getFuncionesByCarteleraIdAndPeliculaId(carteleraId, pelicula.getId());
+            FuncionDto[] funciones = funcionModel.getFuncionesByCarteleraIdAndPeliculaId(cartelera.getId(), pelicula.getId());
 
             JPanel moviePanel = new JPanel();
             moviePanel.setLayout(new BoxLayout(moviePanel, BoxLayout.LINE_AXIS));
@@ -222,6 +227,7 @@ public class Cartelera extends javax.swing.JFrame {
                     try {
                         new Historial().setVisible(true);
                     } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
 
                     setVisible(false);
@@ -237,6 +243,7 @@ public class Cartelera extends javax.swing.JFrame {
         getContentPane().add(sidebar);
 
         profile_pnl.setBounds(0, 0, 300, 10);
+        
     }
 
 
