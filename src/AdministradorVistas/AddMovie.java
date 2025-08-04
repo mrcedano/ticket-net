@@ -378,7 +378,7 @@ public class AddMovie extends javax.swing.JFrame {
 
     private void BtnRegresar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegresar1ActionPerformed
         try {
-            ClienteVistas.panel objCar = new ClienteVistas.panel();
+            ClienteVistas.Cartelera objCar = new ClienteVistas.Cartelera();
             objCar.setVisible(true);
             setVisible(false);
         } catch (Exception ex) {

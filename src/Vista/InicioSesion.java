@@ -234,7 +234,7 @@ public class InicioSesion extends javax.swing.JFrame {
                 }
                 case CLIENTE :{
                     System.out.println("El usuario es Cliente");
-                    new ClienteVistas.panel().setVisible(true);
+                    new ClienteVistas.Cartelera().setVisible(true);
                     setVisible(false);
                     break;
                 }

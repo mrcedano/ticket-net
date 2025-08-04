@@ -84,8 +84,6 @@ public class CarteleraModel {
         return cartelera;
     }
     
- 
-
     public CarteleraDto[] getAllCarteleras() throws Exception {
         ResultSet rsCarteleras = orm.simpleQuery("SELECT * FROM carteleras");
         if (rsCarteleras == null) {
@@ -157,11 +155,7 @@ public class CarteleraModel {
     public PeliculaDto[] getAllPeliculasFromCarteleras() throws Exception {
         List<PeliculaDto> moviesList = new ArrayList<PeliculaDto>();
 
-        ResultSet rs = orm.simpleQuery("SELECT peliculas.nombre, peliculas.publico, peliculas.logo_filepath, peliculas.duracion FROM peliculas");
-
-        if (rs == null) {
-            return null;
-        }
+        ResultSet rs = orm.simpleQuery("SELECT peliculas.id, peliculas.nombre, peliculas.publico, peliculas.logo_filepath, peliculas.duracion FROM peliculas");
 
         while (rs.next()) {
             int idFromDb = rs.getInt("peliculas.id");

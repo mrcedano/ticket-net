@@ -49,6 +49,35 @@ public class FuncionModel {
 
         return funcionDto;
     }
+    
+    public FuncionDto[] getFuncionesByCarteleraIdAndPeliculaId(int cartelera_id, int pelicula_id) throws Exception {
+        List<FuncionDto> funciones = new ArrayList<>();
+        
+        ResultSet rs = orm.simpleProcedure("obtenerFuncionesDePeliculaPorCarteleraIdAndPeliculaId")
+                                                .addParameter(cartelera_id)
+                                                .addParameter(pelicula_id)
+                                                .executeWithResultSet();
+        
+        while(rs.next()) {
+            int idFromDb = rs.getInt("id");
+            LocalDateTime activeSinceFromDb = rs.getTimestamp("activadesde").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            LocalDateTime activeUntilFromDb = rs.getTimestamp("activahasta").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            int sala_idFromDb = rs.getInt("sala_id");
+            
+            FuncionDto pelicula = new FuncionBuilder()
+                                        .withId(idFromDb)
+                                        .withActivoDesde(activeSinceFromDb)
+                                        .withActivoHasta(activeUntilFromDb)
+                                        .withPeliculaId(pelicula_id)
+                                        .withSalaId(sala_idFromDb)
+                                        .withCarteleraId(cartelera_id)
+                                        .build();
+            
+            funciones.add(pelicula);
+        }
+        
+        return funciones.toArray(FuncionDto[]::new);
+    }
 
     public int getLatestFuncionId(int cartelera_id) throws Exception {
         FuncionDto funcionDto = getLatestFuncionFromCarteleraById(cartelera_id);
@@ -134,6 +163,7 @@ public class FuncionModel {
 
         int salaId = rs.getInt("sala_id");
         String salaNombre = rs.getString("sala_nombre");
+        int salaCantAsientos = rs.getInt("sala_CantAsientos");
 
         FuncionDto funcion = new FuncionBuilder()
                 .withId(id) 
@@ -152,6 +182,7 @@ public class FuncionModel {
         SalaDto sala = new SalasBuilder()
                 .withId(salaId)
                 .withNombre(salaNombre)
+                .withCantAsientos(salaCantAsientos)
                 .build();
         
         HashMap<SalaDto, PeliculaDto> salaPeliculaMap = new HashMap<>();
@@ -178,4 +209,7 @@ public class FuncionModel {
                             .addParameter(funcion.getSala_id())
                             .execute();
     }
+    
+    
+    
 }

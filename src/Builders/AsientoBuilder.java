@@ -5,7 +5,7 @@ import DTOs.AsientoDto;
 public class AsientoBuilder {
     private int id;
     private int sala_id;
-    private int asientoNumero;
+    private String asiento;
 
     public AsientoBuilder withId(int id) {
         this.id = id;
@@ -17,12 +17,12 @@ public class AsientoBuilder {
         return this;
     }
 
-    public AsientoBuilder withAsientoNumero(int asientoNumero) {
-        this.asientoNumero = asientoNumero;
+    public AsientoBuilder withAsiento(String asiento) {
+        this.asiento = asiento;
         return this;
     }
-
+    
     public AsientoDto build() {
-        return new AsientoDto(id, sala_id, asientoNumero);
+        return new AsientoDto(id, sala_id, asiento);
     }
 }
