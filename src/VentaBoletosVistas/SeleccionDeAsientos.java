@@ -6,6 +6,7 @@ import DTOs.FuncionDto;
 import DTOs.PeliculaDto;
 import DTOs.SalaDto;
 import Modelo.BoletoModel;
+import Modelo.PDFTicketModel;
 import Modelo.SalaModel;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -261,23 +262,32 @@ public class SeleccionDeAsientos extends JFrame {
         if (seleccionadosSesion.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No seleccionaste ningún asiento.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
+            int costoNino = 75;
+            int costoAdulto = 90;
+
+            int total = preBoleto.getNinos()*costoNino + preBoleto.getAdultos()*costoAdulto;
+            
             BoletoDto boleto = new BoletoBuilder()
                                                  .withNinos(preBoleto.getNinos())
                                                  .withAdultos(preBoleto.getAdultos())
                                                  .withFuncionId(preBoleto.getFuncion_id())
                                                  .withUsuarioId(preBoleto.getUsuario_id())
                                                  .withAsientos(String.join(",", seleccionadosSesion))
+                                                 .withTotal(total)
                                                  .build();
 
              boletoModel.createBoleto(boleto);
+             
+             BoletoDto boletoFromDb = boletoModel.getLastBoletoInserted();
         
              JOptionPane.showMessageDialog(this, "Boletos creados exítosamente, generando ticket...");
         
+             PDFTicketModel PDFGenerator = new PDFTicketModel();
+             
+             PDFGenerator.generar_ticket_pdf(boletoFromDb);
+             
              setVisible(false);
              parent.setVisible(true);
-             
-             // Generando ticket...
-             
              
         }
        } catch(Exception e) {

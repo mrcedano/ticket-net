@@ -4,8 +4,12 @@
  */
 package ClienteVistas;
 
+import DTOs.BoletoDto;
+import DTOs.FuncionDto;
 import JObjects.SideBarBuilder;
 import Modelo.BoletoModel;
+import Modelo.FuncionModel;
+import Modelo.PDFTicketModel;
 import Utils.Global;
 import Vista.InicioSesion;
 import Vista.MiCuenta;
@@ -13,6 +17,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,7 +25,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -28,6 +32,7 @@ import javax.swing.SwingConstants;
 public class Historial extends javax.swing.JFrame {
 
     private BoletoModel boletoModel;
+    private FuncionModel funcionModel;
 
     public Historial() throws Exception {
         initComponents();
@@ -37,7 +42,8 @@ public class Historial extends javax.swing.JFrame {
         setTitle("TicketNet | Historial de boletos comprados");
         
         boletoModel = new BoletoModel();
-
+        funcionModel = new FuncionModel();
+        
         JPanel sidebar = new SideBarBuilder()
                 .addOption("Cartelera", () -> {
                     try {
@@ -89,6 +95,7 @@ public class Historial extends javax.swing.JFrame {
 
         for (Map<String, Object> boleto : boletos) {
             addHistoryItem(historyContainer,
+                    (int) boleto.get("boletoId"),
                     (int) boleto.get("funcionId"),
                     (String) boleto.get("pelicula"),
                     (int) boleto.get("cantAdultos"),
@@ -98,8 +105,11 @@ public class Historial extends javax.swing.JFrame {
         }
     }
 
-    private void addHistoryItem(JPanel container, int funcionId, String movieTitle, int adults, int children,
-            int total, String imagePath) {
+    private void addHistoryItem(JPanel container, int boletoId, int funcionId, String movieTitle, int adults, int children,
+        int total, String imagePath) throws Exception {
+        
+        FuncionDto funcion = funcionModel.findFuncionById(funcionId);
+        
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(null);
         itemPanel.setPreferredSize(new Dimension(530, 120));
@@ -124,30 +134,49 @@ public class Historial extends javax.swing.JFrame {
 
         JLabel titleLabel = new JLabel(movieTitle);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        titleLabel.setBounds(110, 10, 400, 25);
+        titleLabel.setBounds(110, 10, 400, 20);
         itemPanel.add(titleLabel);
 
         JLabel adultsLabel = new JLabel("Adultos: " + adults + "  Niños: " + children);
         adultsLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        adultsLabel.setBounds(110, 40, 200, 20);
+        adultsLabel.setBounds(110, 35, 200, 20);
         itemPanel.add(adultsLabel);
+        
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        String startTime = funcion.getActivoDesde().format(timeFormatter);
+        String endTime = funcion.getActiveHasta().format(timeFormatter);
+
+        JLabel timeLabel = new JLabel("Hora de inicio: " + startTime + " | Hora de terminación: " + endTime);
+        timeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        timeLabel.setBounds(110, 55, 300, 15);
+        itemPanel.add(timeLabel);
+
+        JLabel durationLabel = new JLabel("Duración: " + "90" + " minutos");
+        durationLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        durationLabel.setBounds(110, 75, 200, 15);
+        itemPanel.add(durationLabel);
 
         JLabel totalLabel = new JLabel("Total: $" + total + " MXN");
         totalLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        totalLabel.setBounds(110, 70, 200, 20);
+        totalLabel.setBounds(110, 95, 200, 20);
         itemPanel.add(totalLabel);
 
         JButton printButton = new JButton("Imprimir");
-        printButton.setBounds(400, 70, 100, 30);
+        printButton.setBounds(400, 80, 100, 30);
         printButton.setFocusPainted(false);
         printButton.setVisible(true);
         printButton.setOpaque(true);
         printButton.setBorderPainted(true);
         printButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(itemPanel,
-                    "Imprimiendo boleto para " + movieTitle,
-                    "Imprimir Boleto",
-                    JOptionPane.INFORMATION_MESSAGE);
+            try {
+                PDFTicketModel pdfTicketModel = new PDFTicketModel();
+                BoletoDto boleto = boletoModel.findBoletoById(boletoId);
+                
+                pdfTicketModel.generar_ticket_pdf(boleto);
+                
+            } catch(Exception ex){ 
+                ex.printStackTrace();
+            }
         });
 
         itemPanel.add(printButton);

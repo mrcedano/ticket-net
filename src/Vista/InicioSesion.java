@@ -9,7 +9,6 @@ import AdministradorVistas.Panel;
 import ClienteVistas.Cartelera;
 import ClienteVistas.Registro;
 import DTOs.UserDto;
-import Database.DbConnection;
 import Modelo.UserModel;
 import Enums.UserTypes;
 import static Enums.UserTypes.ADMINISTRADOR;

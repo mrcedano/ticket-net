@@ -268,7 +268,10 @@ public class CompraBoletos extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int cantidadAdultos = (int) adulto_jpn.getValue();
         int cantidadNinos = (int) nino_jpn.getValue();
-        int total = (cantidadAdultos * 50) + (cantidadNinos * 30);
+        int costoNino = 75;
+        int costoAdulto = 90;
+        
+        int total = (cantidadAdultos*costoAdulto) + (cantidadNinos*costoNino);
         JOptionPane.showMessageDialog(this, "Total a pagar: $" + total);
     }//GEN-LAST:event_jButton3ActionPerformed
 

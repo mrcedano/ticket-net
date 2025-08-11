@@ -20,6 +20,8 @@ public class AddSala extends javax.swing.JFrame {
 
     public AddSala() throws Exception {
         initComponents();
+        setTitle("TicketNet | Crear Sala");
+        
         salaModel = new SalaModel();
         setLocationRelativeTo(null);
     }

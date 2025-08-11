@@ -243,7 +243,7 @@ public class FuncionModel {
                 .executeWithResultSet();
 
         List<FuncionDto> funciones = new ArrayList<>();
-        
+
         while (rs.next()) {
             LocalDateTime activoDesde = rs.getTimestamp("activadesde").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
             LocalDateTime activoHasta = rs.getTimestamp("activahasta").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
@@ -262,7 +262,36 @@ public class FuncionModel {
 
             funciones.add(funcion);
         }
-        
+
         return funciones.toArray(FuncionDto[]::new);
     }
+
+    public FuncionDto findFuncionById(int funcionId) throws Exception {
+        ResultSet rs = orm.simpleProcedure("obtenerFuncionPorId")
+                .addParameter(funcionId)
+                .executeWithResultSet();
+
+        if (rs.next() == false) {
+            return null;
+        }
+
+        int idFromDb = rs.getInt("id");
+        LocalDateTime activeSinceFromDb = rs.getTimestamp("activadesde").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime activeUntilFromDb = rs.getTimestamp("activahasta").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        int pelicula_idFromDb = rs.getInt("pelicula_id");
+        int sala_idFromDb = rs.getInt("sala_id");
+        int cartelera_idFromDb = rs.getInt("cartelera_id");
+
+        FuncionDto funcionDto = new FuncionBuilder()
+                .withId(idFromDb)
+                .withActivoDesde(activeSinceFromDb)
+                .withActivoHasta(activeUntilFromDb)
+                .withPeliculaId(pelicula_idFromDb)
+                .withSalaId(sala_idFromDb)
+                .withCarteleraId(cartelera_idFromDb)
+                .build();
+
+        return funcionDto;
+    }
+
 }
