@@ -21,12 +21,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author cedsc
- */
 public class AddFuncion extends javax.swing.JFrame {
-
+                                                                                    
     public JFrame parent = null;
     private DateChooser dateChooser;
 
@@ -44,6 +40,9 @@ public class AddFuncion extends javax.swing.JFrame {
 
         setTitle("TicketNet | Agregar Función Nueva");
         setLocationRelativeTo(null);
+        
+        setResizable(false);
+        setSize(550, 430);
 
         dateChooser = new DateChooser();
         carteleraModel = new CarteleraModel();
@@ -260,7 +259,7 @@ public class AddFuncion extends javax.swing.JFrame {
                         .addComponent(regresar_jbtn1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(crear_jbtn)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -300,8 +299,7 @@ public class AddFuncion extends javax.swing.JFrame {
                         .addGap(19, 19, 19))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(movie_poster_jlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
+                        .addComponent(movie_poster_jlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(crear_jbtn)
@@ -309,7 +307,7 @@ public class AddFuncion extends javax.swing.JFrame {
                 .addGap(39, 39, 39))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, -10, 440, 430));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, -10, 550, 430));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

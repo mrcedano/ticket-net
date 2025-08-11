@@ -297,8 +297,6 @@ public class InicioSesion extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-
     }//GEN-LAST:event_registro_jtbtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
