@@ -8,6 +8,7 @@ import JObjects.SideBarBuilder;
 import Modelo.BoletoModel;
 import Utils.Global;
 import Vista.InicioSesion;
+import Vista.MiCuenta;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -33,7 +34,7 @@ public class Historial extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setLayout(null);
 
-        setTitle("TicketNet |");
+        setTitle("TicketNet | Historial de boletos comprados");
         
         boletoModel = new BoletoModel();
 
@@ -48,6 +49,15 @@ public class Historial extends javax.swing.JFrame {
                 })
                 .addOption("Ver Historial", () -> {
                 })
+                .addOption("Mi Cuenta", () -> {
+                    try {
+                        new MiCuenta(Global.user).setVisible(true);
+                    } catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    
+                    setVisible(false);
+                })
                 .addOption("Cerrar Sesión", () -> {
                     Global.destroySession();
 
@@ -55,7 +65,7 @@ public class Historial extends javax.swing.JFrame {
 
                     setVisible(false);
                 })
-                .build(0, 69, 167, 500);
+                .build(0, 0, 167, 600);
 
         getContentPane().add(sidebar);
 

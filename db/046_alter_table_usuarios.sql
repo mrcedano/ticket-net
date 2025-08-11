@@ -1,0 +1,1 @@
+ALTER TABLE usuarios ADD COLUMN status INT DEFAULT 1;

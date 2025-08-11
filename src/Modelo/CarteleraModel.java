@@ -18,29 +18,29 @@ public class CarteleraModel {
     public CarteleraModel() throws Exception {
         orm = SimpleORM.getInstance();
     }
-    
+
     public CarteleraDto getCarteleraById(int id) throws Exception {
         ResultSet rs = orm.simpleProcedure("buscarCarteleraPorId")
-                          .addParameter(id)
-                          .executeWithResultSet();
-        
+                .addParameter(id)
+                .executeWithResultSet();
+
         if (rs == null) {
             return null;
         }
-        
+
         rs.next();
 
         LocalDate activeSince = rs.getTimestamp("activadesde").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate activeUntil = rs.getTimestamp("activahasta").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int isActivated = rs.getInt("estaActivado");
-        
+
         CarteleraDto cartelera = new CarteleraBuilder()
-                                     .withId(id)
-                                     .withFromDate(activeSince)
-                                     .withToDate(activeUntil)
-                                     .withIsActivated(isActivated)
-                                     .build();
-        
+                .withId(id)
+                .withFromDate(activeSince)
+                .withToDate(activeUntil)
+                .withIsActivated(isActivated)
+                .build();
+
         return cartelera;
     }
 
@@ -83,7 +83,7 @@ public class CarteleraModel {
 
         return cartelera;
     }
-    
+
     public CarteleraDto[] getAllCarteleras() throws Exception {
         ResultSet rsCarteleras = orm.simpleQuery("SELECT * FROM carteleras");
         if (rsCarteleras == null) {
@@ -177,81 +177,79 @@ public class CarteleraModel {
                 .addParameter(cartelera.getIsActivated())
                 .execute();
     }
-    
+
     public void updateCarteleraById(int id, CarteleraDto cartelera) throws Exception {
-       orm.simpleProcedure("actualizarCarteleraPorId")
-                           .addParameter(id)
-                           .addParameter(cartelera.getActiveSince().toString())
-                           .addParameter(cartelera.getActiveUntil().toString())
-                           .addParameter(cartelera.getIsActivated())
-                           .execute();
+        orm.simpleProcedure("actualizarCarteleraPorId")
+                .addParameter(id)
+                .addParameter(cartelera.getActiveSince().toString())
+                .addParameter(cartelera.getActiveUntil().toString())
+                .addParameter(cartelera.getIsActivated())
+                .execute();
     }
-    
+
     public PeliculaDto[] getPeliculasFromCarteleraById(int idCartelera) throws Exception {
-      ResultSet rs = orm.simpleProcedure("obtenerPeliculasDeCarteraPorId")
-                          .addParameter(idCartelera)
-                          .executeWithResultSet();
-      
-      List<PeliculaDto> peliculas = new ArrayList<>();
-      
-      if (rs == null) {
-          return peliculas.toArray(PeliculaDto[]::new);
-      }
-      
-      while(rs.next()) {
-          int idFromDb = rs.getInt("id");
-          String nameFromDb = rs.getString("nombre");
-          String durationFromDb = rs.getString("duracion");
-          String publicObjectiveFromDb = rs.getString("publico");
-          String directorsFromDb = rs.getString("directores");
-          String actorsFromDb = rs.getString("actores");
-          String logoFilePathFromDb = rs.getString("logo_filepath");
-          
-          PeliculaDto pelicula = new PeliculaBuilder()
-                                     .withId(idFromDb)
-                                     .withNombre(nameFromDb)
-                                     .withDuration(durationFromDb)
-                                     .withPublicObjetive(publicObjectiveFromDb)
-                                     .withDirectors(directorsFromDb)
-                                     .withActors(actorsFromDb)
-                                     .withLogo(logoFilePathFromDb)
-                                     .build();
-      
-          peliculas.add(pelicula);
-      }
-      
-      return peliculas.toArray(PeliculaDto[]::new);
+        ResultSet rs = orm.simpleProcedure("obtenerPeliculasDeCarteraPorId")
+                .addParameter(idCartelera)
+                .executeWithResultSet();
+
+        List<PeliculaDto> peliculas = new ArrayList<>();
+
+        while (rs.next()) {
+            int idFromDb = rs.getInt("id");
+            String nameFromDb = rs.getString("nombre");
+            String durationFromDb = rs.getString("duracion");
+            String publicObjectiveFromDb = rs.getString("publico");
+            String directorsFromDb = rs.getString("directores");
+            String actorsFromDb = rs.getString("actores");
+            String logoFilePathFromDb = rs.getString("logo_filepath");
+
+            PeliculaDto pelicula = new PeliculaBuilder()
+                    .withId(idFromDb)
+                    .withNombre(nameFromDb)
+                    .withDuration(durationFromDb)
+                    .withPublicObjetive(publicObjectiveFromDb)
+                    .withDirectors(directorsFromDb)
+                    .withActors(actorsFromDb)
+                    .withLogo(logoFilePathFromDb)
+                    .build();
+
+            peliculas.add(pelicula);
+        }
+
+        return peliculas.toArray(PeliculaDto[]::new);
     }
-    
-    public void addMovieToCarteleraById(int id, int ...moviesId) throws Exception {
+
+    public void addMovieToCarteleraById(int id, int... moviesId) throws Exception {
         String format = "(%s,%s)";
-        
+
         String query = "INSERT INTO peliculas_carteleras(pelicula_id, cartelera_id) VALUES ";
         StringBuilder values = new StringBuilder();
-        
-        for(int i = 0; i < moviesId.length; i++) {
-             String value = String.format(format, moviesId[i], id);
+
+        for (int i = 0; i < moviesId.length; i++) {
+            System.out.println(moviesId[i]);
             
-             values.append(value);
-                 
+            String value = String.format(format, moviesId[i], id);
+
+            values.append(value);
+
             if (i != moviesId.length - 1) {
                 values.append(",");
             }
         }
-        
+
         removeMoviesFromCarteleraById(id);
-        
+
         orm.simpleInsert(query + values.toString());
     }
 
     public boolean isThereACarteleraActivated() throws Exception {
         return getNumberOfCartelerasActivated() > 0;
     }
-    
+
     public void removeMoviesFromCarteleraById(int id) throws Exception {
         orm.simpleProcedure("removerPeliculasDeCarteleraPorId")
-                                                           .addParameter(id)
-                                                           .execute();
+                .addParameter(id)
+                .execute();
     }
 
     public int getNumberOfCartelerasActivated() throws Exception {
@@ -266,29 +264,33 @@ public class CarteleraModel {
 
         return rs.getInt("carteleras_activadas");
     }
-    
+
     public CarteleraDto getCarteleraActivated() throws Exception {
         ResultSet rs = orm.simpleProcedure("obtenerCarteleraActiva")
-                                    .executeWithResultSet();
-        
-        if (rs == null) {
+                .executeWithResultSet();
+
+        if (rs == null || !rs.next()) {
             return null;
         }
-        
-        rs.next();
         
         int id = rs.getInt("id");
         LocalDate activeSince = rs.getTimestamp("activadesde").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate activeUntil = rs.getTimestamp("activahasta").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int isActivated = rs.getInt("estaActivado");
-    
+
         CarteleraDto carteleraDto = new CarteleraBuilder()
-                                                        .withId(id)
-                                                        .withFromDate(activeSince)
-                                                        .withToDate(activeUntil)
-                                                        .withIsActivated(isActivated)
-                                                        .build();
- 
+                .withId(id)
+                .withFromDate(activeSince)
+                .withToDate(activeUntil)
+                .withIsActivated(isActivated)
+                .build();
+
         return carteleraDto;
+    }
+
+    public void deleteCarteleraById(int id) throws Exception {
+        orm.simpleProcedure("eliminarCarteleraPorId")
+                .addParameter(id)
+                .execute();
     }
 }

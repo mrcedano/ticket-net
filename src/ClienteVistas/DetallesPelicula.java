@@ -1,6 +1,8 @@
-package Vista;
+package ClienteVistas;
 
 import DTOs.PeliculaDto;
+import Utils.ImageMagic;
+import Vista.Pelicula;
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,8 +11,10 @@ public class DetallesPelicula extends JFrame {
     private JLabel lblTitulo, lblPoster, lblDuracion, lblClasificacion, lblIdioma, lblFormato, lblReparto;
     private JTextArea txtSinopsis;
     private JButton btnComprar, btnRegresar;
+    
+    public JFrame parent;
 
-    public DetallesPelicula(Pelicula peli) {
+    public DetallesPelicula(PeliculaDto peli) {
         setTitle("Detalles de Película");
         setSize(900, 650);
         setLocationRelativeTo(null);
@@ -18,25 +22,23 @@ public class DetallesPelicula extends JFrame {
         setLayout(null);
         getContentPane().setBackground(new Color(48, 48, 48)); // Fondo oscuro uniforme
 
-        // Fuentes
         Font fuenteTitulo = new Font("SansSerif", Font.BOLD, 28);
         Font fuenteTexto = new Font("SansSerif", Font.BOLD, 18);
         Font fuenteBoton = new Font("SansSerif", Font.BOLD, 16);
 
-        // Título centrado
-        lblTitulo = new JLabel(peli.getTitulo(), SwingConstants.CENTER);
+        lblTitulo = new JLabel(peli.getNombre(), SwingConstants.CENTER);
         lblTitulo.setForeground(Color.WHITE);
         lblTitulo.setFont(fuenteTitulo);
         lblTitulo.setBounds(0, 20, 900, 35);
         add(lblTitulo);
 
-        // Imagen horizontal mejor proporcionada
         lblPoster = new JLabel();
         lblPoster.setBounds(50, 70, 800, 300);
-        java.net.URL imgUrl = getClass().getResource("/" + peli.getRutaImagen());
-        if (imgUrl != null) {
-            ImageIcon poster = new ImageIcon(imgUrl);
-            Image img = poster.getImage().getScaledInstance(800, 300, Image.SCALE_SMOOTH);
+        lblPoster.setHorizontalAlignment(JLabel.CENTER);
+        
+        if (peli.getLogo() != "") {
+            ImageIcon poster = new ImageIcon(peli.getLogo());
+            Image img = ImageMagic.resizeImage(poster, 300, 300).getImage();
             lblPoster.setIcon(new ImageIcon(img));
         } else {
             lblPoster.setText("Imagen no encontrada");
@@ -50,11 +52,11 @@ public class DetallesPelicula extends JFrame {
         int yBase = 390;
         int espacio = 30;
 
-        lblDuracion = crearLabel("Duración: " + peli.getDuracion(), xInfo, yBase, fuenteTexto);
-        lblClasificacion = crearLabel("Clasificación: " + peli.getClasificacion(), xInfo, yBase + espacio, fuenteTexto);
-        lblIdioma = crearLabel("Idioma: " + peli.getIdioma(), xInfo, yBase + espacio * 2, fuenteTexto);
-        lblFormato = crearLabel("Formato: " + peli.getFormato(), xInfo, yBase + espacio * 3, fuenteTexto);
-        lblReparto = crearLabel("Reparto: " + peli.getReparto(), xInfo, yBase + espacio * 4, fuenteTexto);
+        lblDuracion = crearLabel("Duración: " + peli.getDuration(), xInfo, yBase, fuenteTexto);
+        lblClasificacion = crearLabel("Clasificación: " + peli.getPublic_objetive(), xInfo, yBase + espacio, fuenteTexto);
+        lblIdioma = crearLabel("Idioma: " + "Español", xInfo, yBase + espacio * 2, fuenteTexto);
+        lblFormato = crearLabel("Formato: " + "Normal", xInfo, yBase + espacio * 3, fuenteTexto);
+        lblReparto = crearLabel("Reparto: " + peli.getDirectors() + " | " + peli.getActors(), xInfo, yBase + espacio * 4, fuenteTexto);
 
         add(lblDuracion);
         add(lblClasificacion);
@@ -63,7 +65,7 @@ public class DetallesPelicula extends JFrame {
         add(lblReparto);
 
         // Sinopsis sin bordes ni fondo distinto
-        txtSinopsis = new JTextArea("Sinopsis: " + peli.getSinopsis());
+        txtSinopsis = new JTextArea("Sinopsis: " + "Una Película muy interesante!");
         txtSinopsis.setWrapStyleWord(true);
         txtSinopsis.setLineWrap(true);
         txtSinopsis.setEditable(false);
@@ -101,7 +103,6 @@ public class DetallesPelicula extends JFrame {
         setVisible(true);
     }
 
-    // Método para crear etiquetas con fuente
     private JLabel crearLabel(String texto, int x, int y, Font fuente) {
         JLabel lbl = new JLabel(texto);
         lbl.setForeground(Color.WHITE);

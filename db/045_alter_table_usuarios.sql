@@ -1,0 +1,1 @@
+ALTER TABLE usuarios ADD COLUMN correo VARCHAR(255) DEFAULT '';

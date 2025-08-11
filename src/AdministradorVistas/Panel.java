@@ -3,6 +3,7 @@ package AdministradorVistas;
 import JObjects.SideBarBuilder;
 import Utils.Global;
 import Vista.InicioSesion;
+import Vista.MiCuenta;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -16,20 +17,37 @@ public class Panel extends javax.swing.JFrame {
         setTitle("Ticketnet | Panel de Administrador");
 
         JPanel sidebar = new SideBarBuilder()
+                .addOption("Panel", () -> {
+                })
                 .addOption("Mi cuenta", () -> {
-                    System.out.println("You clicked on Mi cuenta!");
+                    try {
+                        new MiCuenta(Global.user).setVisible(true);
+                    } catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    
+                    setVisible(false);
+                })
+                .addOption("Usuarios", () -> {
+                    try {
+                        new IndexUsuarios().setVisible(true);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                    setVisible(false);
                 })
                 .addOption("Cerrar Sesión", () -> {
                     Global.destroySession();
-                             
+
                     new InicioSesion().setVisible(true);
                     setVisible(false);
                 })
-                .build(0, 69, 167, 250);
+                .build(0, 0, 167, 300);
 
         getContentPane().add(sidebar);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -112,17 +130,17 @@ public class Panel extends javax.swing.JFrame {
 
     private void peliculas_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_peliculas_btnActionPerformed
         setVisible(false);
-        
+
         PanelPeliculas panelPeliculas = new PanelPeliculas();
-        
+
         panelPeliculas.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         panelPeliculas.addWindowListener(new WindowListener() {
             @Override
             public void windowClosing(WindowEvent e) {
-              panelPeliculas.setVisible(false);
-              
-              setVisible(true);
+                panelPeliculas.setVisible(false);
+
+                setVisible(true);
             }
 
             @Override
@@ -149,38 +167,38 @@ public class Panel extends javax.swing.JFrame {
             public void windowDeactivated(WindowEvent we) {
             }
         });
-        
+
         panelPeliculas.setVisible(true);
     }//GEN-LAST:event_peliculas_btnActionPerformed
 
     private void cartelaras_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartelaras_btnActionPerformed
         setVisible(false);
-        
+
         PanelCarteleras panelCarteleras = new PanelCarteleras();
-        
+
         panelCarteleras.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        
+
         panelCarteleras.setVisible(true);
-        
+
         panelCarteleras.addWindowListener(new WindowAdapter() {
-        @Override
-        public void windowClosing(WindowEvent e) {
-             panelCarteleras.setVisible(false);
-             setVisible(true);
-        }
-      });
+            @Override
+            public void windowClosing(WindowEvent e) {
+                panelCarteleras.setVisible(false);
+                setVisible(true);
+            }
+        });
     }//GEN-LAST:event_cartelaras_btnActionPerformed
 
     private void FuncionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FuncionesActionPerformed
         try {
             setVisible(false);
-            
+
             PanelFunciones panelFunciones = new PanelFunciones();
-            
+
             panelFunciones.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-            
+
             panelFunciones.setVisible(true);
-            
+
             panelFunciones.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -196,13 +214,13 @@ public class Panel extends javax.swing.JFrame {
     private void salas_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salas_btnActionPerformed
         try {
             setVisible(false);
-            
+
             PanelSalas panelSalas = new PanelSalas();
-            
+
             panelSalas.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-            
+
             panelSalas.setVisible(true);
-            
+
             panelSalas.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -213,7 +231,7 @@ public class Panel extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_salas_btnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

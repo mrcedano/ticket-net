@@ -9,34 +9,61 @@ import Modelo.FuncionModel;
 import Utils.Global;
 import Vista.InicioSesion;
 import VentaBoletosVistas.CompraBoletos;
+import Vista.MiCuenta;
 import com.raven.datechooser.DateChooser;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 public class Cartelera extends javax.swing.JFrame {
+
+    private FuncionModel funcionModel;
+    private CarteleraModel carteleraModel;
+
+    private JPanel showtimesPanel, moviesContainer;
+    private final LocalDate today = LocalDate.now();
+    private JPanel previousDateSelected;
+    private String dateSelectedAsString;
+
+    public JFrame parent;
+    public boolean isSuccessInConstructor;
+
+    private PeliculaDto[] peliculas;
+    private CarteleraDto cartelera;
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         cartelera_jlbl = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         soon_movies_pnl = new javax.swing.JPanel();
-        profile_pnl = new javax.swing.JPanel();
         funciones_jtxtpn = new javax.swing.JScrollPane();
+        horarios_jspn = new javax.swing.JScrollPane();
+        horarios_jpnl = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,35 +83,44 @@ public class Cartelera extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(soon_movies_pnl);
 
-        profile_pnl.setBackground(new java.awt.Color(255, 102, 102));
-        profile_pnl.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        javax.swing.GroupLayout horarios_jpnlLayout = new javax.swing.GroupLayout(horarios_jpnl);
+        horarios_jpnl.setLayout(horarios_jpnlLayout);
+        horarios_jpnlLayout.setHorizontalGroup(
+            horarios_jpnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 650, Short.MAX_VALUE)
+        );
+        horarios_jpnlLayout.setVerticalGroup(
+            horarios_jpnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 112, Short.MAX_VALUE)
+        );
+
+        horarios_jspn.setViewportView(horarios_jpnl);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(profile_pnl, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addContainerGap(185, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(funciones_jtxtpn)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
-                    .addComponent(cartelera_jlbl))
+                    .addComponent(cartelera_jlbl)
+                    .addComponent(horarios_jspn, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(cartelera_jlbl)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(profile_pnl, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
+                .addComponent(cartelera_jlbl)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(horarios_jspn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(funciones_jtxtpn, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addGap(48, 48, 48))
         );
 
         pack();
@@ -95,12 +131,26 @@ public class Cartelera extends javax.swing.JFrame {
 
         setLocationRelativeTo(null);
         setTitle("TicketNet | Cartelera de Películas | Usuario << " + Global.user.getUsername() + " >>");
-        
+
         DateChooser dateChooser = new DateChooser();
 
-        CarteleraModel carteleraModel = new CarteleraModel();
-        PeliculaDto[] peliculas = carteleraModel.getPeliculasFromCarteleraById(carteleraModel.getCarteleraActivated().getId());
-        CarteleraDto cartelera = carteleraModel.getCarteleraActivated();
+        funcionModel = new FuncionModel();
+        carteleraModel = new CarteleraModel();
+
+        cartelera = carteleraModel.getCarteleraActivated();
+        peliculas = carteleraModel.getPeliculasFromCarteleraById(cartelera.getId());
+
+        if (cartelera == null) {
+            Global.destroySession();
+
+            JOptionPane.showMessageDialog(this, "No hay una cartelera activa", "Mensaje", JOptionPane.WARNING_MESSAGE);
+
+            isSuccessInConstructor = false;
+
+            return;
+        }
+
+        FuncionDto[] funcionesDelMes = funcionModel.getFuncionesByMonthAndYearAndCarteleraId(today.getMonth().getValue(), today.getYear(), cartelera.getId());
 
         soon_movies_pnl.setLayout(new BoxLayout(soon_movies_pnl, BoxLayout.LINE_AXIS));
         for (int i = 0; i < peliculas.length; i++) {
@@ -122,6 +172,32 @@ public class Cartelera extends javax.swing.JFrame {
             moviePanel.add(Box.createVerticalStrut(5));
             moviePanel.add(title);
 
+            moviePanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+            moviePanel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                    DetallesPelicula detallesPelicula = new DetallesPelicula(pelicula);
+                    detallesPelicula.setVisible(true);
+
+                    detallesPelicula.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+                    detallesPelicula.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            detallesPelicula.setVisible(false);
+
+                            setVisible(true);
+                        }
+                    });
+
+                    setVisible(false);
+
+                    detallesPelicula.setVisible(true);
+                }
+            });
+
             soon_movies_pnl.add(moviePanel);
             soon_movies_pnl.add(Box.createHorizontalStrut(5));
 
@@ -135,15 +211,79 @@ public class Cartelera extends javax.swing.JFrame {
         jScrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        FuncionModel funcionModel = new FuncionModel();
-
-        JPanel moviesContainer = new JPanel();
+        moviesContainer = new JPanel();
         moviesContainer.setLayout(new BoxLayout(moviesContainer, BoxLayout.PAGE_AXIS));
         moviesContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        for (PeliculaDto pelicula : peliculas) {
-            FuncionDto[] funciones = funcionModel.getFuncionesByCarteleraIdAndPeliculaId(cartelera.getId(), pelicula.getId());
+        funciones_jtxtpn.setBorder(null);
+        funciones_jtxtpn.setViewportView(moviesContainer);
+        funciones_jtxtpn.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        funciones_jtxtpn.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
+        JPanel sidebar = new SideBarBuilder()
+                .addOption("Cartelera", () -> {
+                })
+                .addOption("Ver Historial", () -> {
+                    try {
+                        new Historial().setVisible(true);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                    setVisible(false);
+                })
+                .addOption("Mi cuenta", () -> {
+                    try {
+                        new MiCuenta(Global.user).setVisible(true);
+                    } catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    
+                    setVisible(false);
+                })
+                .addOption("Cerrar Sesión", () -> {
+                    Global.destroySession();
+
+                    new InicioSesion().setVisible(true);
+                    setVisible(false);
+                })
+                .build(0, 0, 167, 700);
+
+        getContentPane().add(sidebar);
+
+        horarios_jpnl = new JPanel();
+        horarios_jpnl.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        horarios_jpnl.setBorder(null);
+        
+        for (FuncionDto funcion : funcionesDelMes) {
+            LocalDateTime startDate = funcion.getActivoDesde();
+
+            DateTimeFormatter formatterForDayAndMonth = DateTimeFormatter.ofPattern("d MMM", Locale.of("es"));
+            DateTimeFormatter formatterForNameOfDayOfWeek = DateTimeFormatter.ofPattern("EEEE", Locale.of("es"));
+
+            String day_month = startDate.format(formatterForDayAndMonth);
+            String nameOfDayOfWeek = startDate.format(formatterForNameOfDayOfWeek);
+
+            boolean isSelectedDay = today.isEqual(startDate.toLocalDate());
+ 
+            horarios_jpnl.add(createVerticalLabelGroup(day_month, nameOfDayOfWeek, startDate.toLocalDate(), isSelectedDay));
+        }
+
+        horarios_jspn.setViewportView(horarios_jpnl);
+        horarios_jspn.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        horarios_jspn.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        isSuccessInConstructor = true;
+        
+        loadFuncionesFromDate(today);
+    }
+
+    public final void loadFuncionesFromDate(LocalDate date) throws Exception {
+        moviesContainer.removeAll();
+        
+        for (PeliculaDto pelicula : peliculas) {
+            FuncionDto[] funciones = funcionModel.getFuncionesOfMovieByDateAndPeliculaIdAndCarteleraId(date, pelicula.getId(), cartelera.getId());
+            
             JPanel moviePanel = new JPanel();
             moviePanel.setLayout(new BoxLayout(moviePanel, BoxLayout.LINE_AXIS));
             moviePanel.setBorder(new EmptyBorder(10, 0, 20, 0));
@@ -165,7 +305,7 @@ public class Cartelera extends javax.swing.JFrame {
             detailsPanel.add(title);
             detailsPanel.add(Box.createVerticalStrut(10));
 
-            JPanel showtimesPanel = new JPanel();
+            showtimesPanel = new JPanel();
             showtimesPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
             showtimesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -213,45 +353,84 @@ public class Cartelera extends javax.swing.JFrame {
             moviePanel.add(detailsPanel);
 
             moviesContainer.add(moviePanel);
+            funciones_jtxtpn.revalidate();
+            funciones_jtxtpn.repaint();
+        }
+    }
+
+    private JPanel createVerticalLabelGroup(String topText, String bottomText, LocalDate date, boolean isSelectedDay) throws Exception {
+        JPanel verticalGroup = new JPanel();
+        verticalGroup.setName(topText);
+
+        verticalGroup.setLayout(new BoxLayout(verticalGroup, BoxLayout.Y_AXIS));
+
+        JLabel labelTop = new JLabel(topText);
+        labelTop.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        labelTop.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel labelBottom = new JLabel(bottomText);
+        labelBottom.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        labelBottom.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        verticalGroup.setPreferredSize(new Dimension(90, 100));
+
+        verticalGroup.add(Box.createVerticalGlue());
+        verticalGroup.add(labelTop);
+        verticalGroup.add(Box.createVerticalStrut(5)); // The 5px vertical gap
+        verticalGroup.add(labelBottom);
+        verticalGroup.add(Box.createVerticalGlue());
+
+        verticalGroup.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        verticalGroup.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                verticalGroup.setBackground(Color.YELLOW);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (verticalGroup.getName().equals(dateSelectedAsString)) {
+                    return;
+                }
+
+                verticalGroup.setBackground(null);
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (previousDateSelected != null) {
+                    previousDateSelected.setBackground(null);
+                }
+                
+                dateSelectedAsString = verticalGroup.getName();
+                previousDateSelected = verticalGroup;
+                verticalGroup.setBackground(Color.YELLOW);
+                
+                try {
+                    loadFuncionesFromDate(date);
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        if (isSelectedDay) {
+            verticalGroup.setBackground(Color.YELLOW);
+            previousDateSelected = verticalGroup;
+            dateSelectedAsString = verticalGroup.getName();
         }
 
-        funciones_jtxtpn.setBorder(null);
-        funciones_jtxtpn.setViewportView(moviesContainer);
-        funciones_jtxtpn.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        funciones_jtxtpn.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        JPanel sidebar = new SideBarBuilder()
-                .addOption("Cartelera", () -> {
-                })
-                .addOption("Ver Historial", () -> {
-                    try {
-                        new Historial().setVisible(true);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-
-                    setVisible(false);
-                })
-                .addOption("Cerrar Sesión", () -> {
-                    Global.destroySession();
-
-                    new InicioSesion().setVisible(true);
-                    setVisible(false);
-                })
-                .build(0, 69, 167, 500);
-
-        getContentPane().add(sidebar);
-
-        profile_pnl.setBounds(0, 0, 300, 10);
-        
+        return verticalGroup;
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cartelera_jlbl;
     private javax.swing.JScrollPane funciones_jtxtpn;
+    private javax.swing.JPanel horarios_jpnl;
+    private javax.swing.JScrollPane horarios_jspn;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JPanel profile_pnl;
     private javax.swing.JPanel soon_movies_pnl;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -112,7 +113,6 @@ public class IndexCarteleras extends javax.swing.JFrame {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-
             }
         });
     }
@@ -124,7 +124,17 @@ public class IndexCarteleras extends javax.swing.JFrame {
     }
 
     public void dialogToDeleteCartelera(int id, int row) throws Exception {
-
+        carteleraModel.deleteCarteleraById(id);
+        
+        tableModel.removeRow(row);
+        
+        System.out.println("Intentado eliminar la cartelera con ID: " + id);
+        
+        if (carteleraModel.getCarteleraActivated() == null) {
+            JOptionPane.showMessageDialog(this, "Se eliminó una cartelera activa, los usuarios no podrán entrar a la cartelera.", "Mensaje", JOptionPane.WARNING_MESSAGE);
+        }
+        
+        JOptionPane.showMessageDialog(this, "Se ha eliminado la cartelera", "Mensaje", JOptionPane.OK_OPTION);
     }
 
     private RowEvent getEventByColumn(int column) {

@@ -5,6 +5,9 @@
  */
 package Vista;
 
+import AdministradorVistas.Panel;
+import ClienteVistas.Cartelera;
+import ClienteVistas.Registro;
 import DTOs.UserDto;
 import Database.DbConnection;
 import Modelo.UserModel;
@@ -14,6 +17,8 @@ import static Enums.UserTypes.CAJERO;
 import static Enums.UserTypes.CLIENTE;
 import Utils.Global;
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,32 +26,22 @@ import javax.swing.JOptionPane;
  * @author jccre
  */
 public class InicioSesion extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form InterfazUsuario
      */
     public InicioSesion() {
         initComponents();
-        
+
         contrasenia_field.setEchoChar('*');
-        OCULTAR.setVisible(true); 
+        OCULTAR.setVisible(true);
         VER.setVisible(false);
-        
+
         setTitle("TicketNet | Inicio de sesión");
-        iniciosesion_button.setOpaque(true);              
-        iniciosesion_button.setContentAreaFilled(true);  
-        iniciosesion_button.setBorderPainted(false);     
+        iniciosesion_button.setOpaque(true);
+        iniciosesion_button.setContentAreaFilled(true);
+        iniciosesion_button.setBorderPainted(false);
         iniciosesion_button.setBackground(new Color(255, 74, 74));
-        PassForg.setText("<html><u>¿Olvidaste tu contraseña?</u></html>");
-        PassForg.setForeground(Color.white);
-        PassForg.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        PassForg.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            new OlvidoContrasenia().setVisible(true);
-            dispose();
-        }
-    });
 
         setLocationRelativeTo(null);
     }
@@ -66,10 +61,10 @@ public class InicioSesion extends javax.swing.JFrame {
         contrasenia_field = new javax.swing.JPasswordField();
         usuario_field = new javax.swing.JTextField();
         icono_central_jlb = new javax.swing.JLabel();
-        PassForg = new javax.swing.JLabel();
         VER = new javax.swing.JLabel();
         OCULTAR = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        registro_jtbtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -94,7 +89,7 @@ public class InicioSesion extends javax.swing.JFrame {
                 iniciosesion_buttonActionPerformed(evt);
             }
         });
-        jPanel1.add(iniciosesion_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 425, 300, 64));
+        jPanel1.add(iniciosesion_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 425, 300, 40));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 22)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -141,14 +136,6 @@ public class InicioSesion extends javax.swing.JFrame {
         icono_central_jlb.setPreferredSize(new java.awt.Dimension(1024, 1536));
         jPanel1.add(icono_central_jlb, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 34, 366, 195));
 
-        PassForg.setText("sss");
-        PassForg.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                PassForgMouseClicked(evt);
-            }
-        });
-        jPanel1.add(PassForg, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 501, -1, -1));
-
         VER.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/VER (2).png"))); // NOI18N
         VER.setText("jLabel1");
         VER.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -172,14 +159,18 @@ public class InicioSesion extends javax.swing.JFrame {
         jLabel4.setText("Contraseña: ");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 326, -1, -1));
 
+        registro_jtbtn.setText("Registro");
+        registro_jtbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registro_jtbtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(registro_jtbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 490, 150, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 530));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void PassForgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PassForgMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PassForgMouseClicked
 
     private void usuario_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuario_fieldActionPerformed
         // TODO add your handling code here:
@@ -193,7 +184,7 @@ public class InicioSesion extends javax.swing.JFrame {
         try {
             String usernameFromField = usuario_field.getText();
             String passswordFromField = new String(contrasenia_field.getPassword());
-            
+
             if (usernameFromField.isEmpty() && passswordFromField.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Falta el usuario y la contraseña", "Error", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -203,7 +194,7 @@ public class InicioSesion extends javax.swing.JFrame {
             } else if (passswordFromField.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Falta la contraseña", "Error", JOptionPane.WARNING_MESSAGE);
                 return;
-            } 
+            }
 
             UserModel userModel = new UserModel();
             UserDto userDto = userModel.findUserByUsername(usernameFromField);
@@ -217,32 +208,46 @@ public class InicioSesion extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Credenciales invalidas!", "Autenticación incorrecta", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             UserTypes userType = userDto.getType();
             Global.user = userDto;
 
             switch (userType) {
-                case ADMINISTRADOR : {
-                    System.out.println("El usuario es un administrador");
-                    new AdministradorVistas.Panel().setVisible(true);
+                case ADMINISTRADOR: {
+                    Panel panel = new Panel();
+
+                    panel.setVisible(true);
                     setVisible(false);
+
                     break;
                 }
-                case CAJERO : {
-                    System.out.println("El usuario es un cajero");
-                    break;
-                }
-                case CLIENTE :{
-                    System.out.println("El usuario es Cliente");
-                    new ClienteVistas.Cartelera().setVisible(true);
+                case CAJERO: {
+                    CajeroVistas.Panel panel = new CajeroVistas.Panel();
+                    
+                    panel.setVisible(true);
+                    
                     setVisible(false);
+ 
                     break;
                 }
-                default : {
+                case CLIENTE: {
+                    Cartelera cartelera = new Cartelera();
+
+                    if (cartelera.isSuccessInConstructor == false) {
+                        return;
+                    }
+
+                    cartelera.setVisible(true);
+                    cartelera.parent = this;
+                    setVisible(false);
+
+                    break;
+                }
+                default: {
                     JOptionPane.showMessageDialog(null, "Usuario correcto!", "Acceso concedido", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_iniciosesion_buttonActionPerformed
@@ -256,11 +261,11 @@ public class InicioSesion extends javax.swing.JFrame {
     private void OCULTARMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OCULTARMouseClicked
         VER.setVisible(true);
         OCULTAR.setVisible(false);
-        contrasenia_field.setEchoChar((char)0);
+        contrasenia_field.setEchoChar((char) 0);
     }//GEN-LAST:event_OCULTARMouseClicked
 
     private void contrasenia_fieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contrasenia_fieldMouseClicked
-        
+
     }//GEN-LAST:event_contrasenia_fieldMouseClicked
 
     private void contrasenia_fieldMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contrasenia_fieldMouseEntered
@@ -271,9 +276,34 @@ public class InicioSesion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_contrasenia_fieldMousePressed
 
+    private void registro_jtbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registro_jtbtnActionPerformed
+        try {
+            setVisible(false);
+
+            Registro registro = new Registro();
+            registro.parent = this;
+
+            registro.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    registro.setVisible(false);
+
+                    setVisible(true);
+                }
+            });
+            
+            setVisible(false);
+            
+            registro.setVisible(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+    }//GEN-LAST:event_registro_jtbtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel OCULTAR;
-    private javax.swing.JLabel PassForg;
     private javax.swing.JLabel VER;
     private javax.swing.JPasswordField contrasenia_field;
     private javax.swing.JLabel icono_central_jlb;
@@ -282,7 +312,7 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton registro_jtbtn;
     private javax.swing.JTextField usuario_field;
     // End of variables declaration//GEN-END:variables
 }
-

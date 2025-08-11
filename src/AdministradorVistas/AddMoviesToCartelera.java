@@ -230,7 +230,7 @@ public class AddMoviesToCartelera extends JFrame {
                 .build();
 
         carteleraModel.updateCarteleraById(id, cartelera);
-
+        
         if (selectedMoviesIds.size() > 0) {
             carteleraModel.addMovieToCarteleraById(id, selectedMoviesIds.stream().mapToInt(Integer::intValue).toArray());
         } else {
@@ -245,6 +245,10 @@ public class AddMoviesToCartelera extends JFrame {
 
         PeliculaDto[] peliculas = peliculaModel.getMovies();
         PeliculaDto[] selectedPeliculas = carteleraModel.getPeliculasFromCarteleraById(id);
+
+        for(PeliculaDto selectedPelicula : selectedPeliculas) {
+            System.out.println(selectedPelicula.getNombre());
+        }
 
         Set<PeliculaDto> pelicutasAsSet = new HashSet<>(Arrays.asList(peliculas));
         Set<PeliculaDto> selectedPelicualasAsSet = new HashSet<>(Arrays.asList(selectedPeliculas));
